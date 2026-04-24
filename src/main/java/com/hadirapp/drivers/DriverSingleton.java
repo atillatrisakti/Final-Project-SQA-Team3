@@ -1,7 +1,5 @@
 package com.hadirapp.drivers;
 
-
-
 import org.openqa.selenium.WebDriver;
 
 import com.hadirapp.drivers.strategies.DriverStrategy;

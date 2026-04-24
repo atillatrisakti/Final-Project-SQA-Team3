@@ -11,6 +11,9 @@ public class Constants {
 
     private static final Dotenv dotenv = Dotenv.load();
     public static final String URL = dotenv.get("BASE_URL");
+    public static final String EMAIL = dotenv.get("EMAIL");
+    public static final String PASSWORD = dotenv.get("PASSWORD");
+    public static final String DASHBOARD_URL = dotenv.get("DASHBOARD_URL");
     public static final long TIMEOUT = 10;
 
 }
