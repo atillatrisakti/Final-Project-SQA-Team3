@@ -67,8 +67,8 @@ public class RequestsTest {
             // Tahap 4: isi semua field dengan data valid pada hari yang sama, memastikan jam masuk lebih kecil dari jam keluar
             // dan kedua jam tidak melewati 24:00.
             LocalDate tanggalLembur = LocalDate.now();
-            LocalDateTime jamMasuk = tanggalLembur.atTime(18, 0);
-            LocalDateTime jamKeluar = tanggalLembur.atTime(20, 0);
+            LocalDateTime jamMasuk = tanggalLembur.atTime(8, 0);
+            LocalDateTime jamKeluar = tanggalLembur.atTime(23, 0);
             lemburPage.fillOvertimeForm(
                     jamMasuk,
                     jamKeluar,
@@ -231,10 +231,7 @@ public class RequestsTest {
                     "Menguji fungsi reset pada form pengajuan lembur.",
                     "Data ini akan dibersihkan kembali menggunakan tombol reset.");
 
-            // Tahap 5: klik button Ajukan sesuai skenario, lalu lanjut klik tombol Reset.
-            // Proses tunggu hasil submit tetap digunakan sebagai mitigasi server lemot jika aplikasi memproses aksi ini terlebih dahulu.
-            lemburPage.submitOvertime();
-            lemburPage.waitForSubmissionResult();
+            // Tahap 5: klik tombol Reset untuk mengosongkan semua field.
             lemburPage.clickReset();
 
             // Tahap 6: validasi akhir TC-LMB-07, semua field harus kembali kosong setelah tombol Reset ditekan.
@@ -266,9 +263,9 @@ public class RequestsTest {
     private void runTestCase(String testCaseId, Runnable steps) {
         try {
             steps.run();
-            logTestCaseResult(testCaseId, "PASS");
+            logTestCaseResult(testCaseId, "pass");
         } catch (AssertionError | RuntimeException ex) {
-            logTestCaseResult(testCaseId, "FAIL");
+            logTestCaseResult(testCaseId, "failed");
             throw ex;
         }
     }

@@ -1,0 +1,9 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^mvn test -Dtest=RequestsTest#tcLmb02SubmitOvertimeWithValidData -X$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "mvn test": true
+    }
+}
