@@ -13,6 +13,11 @@ public class WaitUtils {
         return wait.until(ExpectedConditions.urlToBe(url));
     }
 
+    public static Boolean waitForUrlContains(WebDriver driver, String urlFraction, int timeoutInSeconds) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
+        return wait.until(ExpectedConditions.urlContains(urlFraction));
+    }
+
     public static WebDriverWait getExplicitWait(WebDriver driver, int timeoutInSeconds) {
         return new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
     }

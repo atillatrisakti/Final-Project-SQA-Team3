@@ -41,9 +41,16 @@ public class RegisterPage {
     @FindBy(xpath = "//div[@role='alert']//p")
     private WebElement alertMessage;
 
+    @FindBy(xpath = "//button[text()='disini']")
+    private WebElement backToLoginButton;
+
 
 public void clickRegisterButton(){
     registerButton.click();
+}
+
+public void clickBackToLoginButton(){
+    backToLoginButton.click();
 }
 
 public void setNIK(String NIK){
