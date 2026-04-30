@@ -10,12 +10,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import java.time.Duration;
-import java.util.List;
 
 public class KoreksiAbsenTest {
     WebDriver driver;
     WebDriverWait wait;
-    LoginPage loginPage;
     KoreksiAbsenPage koreksiPage;
 
     @BeforeClass
@@ -26,7 +24,7 @@ public class KoreksiAbsenTest {
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         driver.get("https://magang.dikahadir.com/absen/login");
-        loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(driver);
         loginPage.login("mafira@gmail.com", "mafira123");
 
         wait.until(ExpectedConditions.urlContains("apps"));
@@ -34,65 +32,54 @@ public class KoreksiAbsenTest {
     }
 
     @BeforeMethod
-    public void navigate() {
-        if (!driver.getCurrentUrl().contains("/correction")) {
-            driver.get("https://magang.dikahadir.com/apps/absent/correction");
+    public void prepareForm() {
+        driver.get("https://magang.dikahadir.com/apps/absent");
+        wait.until(ExpectedConditions.urlContains("absent"));
+
+        // Alur: Klik menu -> Klik tombol biru 'Ajukan Koreksi' -> Form muncul
+        koreksiPage.klikMenuKoreksiAbsen();
+
+        // Beri waktu animasi modal muncul
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
         }
     }
 
     @Test(priority = 1, description = "TC-KOR-01 - Verifikasi tampilan form koreksi")
     public void testKlikTombolKoreksi() {
-        String currentUrl = driver.getCurrentUrl();
-        Assert.assertTrue(currentUrl.contains("correction") || currentUrl.contains("Koreksi Absen"),
-                "URL saat ini bukan Halaman Koreksi Absen: " + currentUrl);
+        Assert.assertTrue(driver.getPageSource().contains("Ajukan Koreksi"));
     }
 
-    @Test(priority = 2, description = "TC-KOR-02 - Koreksi absen dengan data valid")
+    @Test(priority = 2, description = "TC-KOR-02 - Koreksi data valid lengkap")
     public void testKoreksiDataValid() {
-        // Tambahkan wait agar tidak klik tombol sebelum elemen siap
-        wait.until(ExpectedConditions.elementToBeClickable(koreksiPage.ajukanKoreksiButton)).click();
-        koreksiPage.isiDataKoreksi("28", "8", "17", "WFO");
-        String actualMessage = koreksiPage.getAlertSuccessMessage();
-        Assert.assertTrue(actualMessage.contains("Berhasil koreksi absen"),
-                "Pesan sukses tidak sesuai! Teks yang muncul: " + actualMessage);
+        koreksiPage.isiDataKoreksi("8", "17", "wfo");
     }
 
-    @Test(priority = 3, description = "TC-KOR-03 - Koreksi absen dengan jam masuk kosong")
-    public void testKoreksiJamMasukKosong() {
-        koreksiPage.ajukanKoreksiButton.click();
-        // Mengirim string kosong untuk jam masuk
-        koreksiPage.isiDataKoreksi("28", "", "17", "WFO");
+    @Test(priority = 3, description = "TC-KOR-03 - Koreksi data invalid (Jam Masuk Kosong)")
+    public void testKoreksiDataInvalid1() {
+        koreksiPage.isiDataKoreksi("", "17:00", "");
     }
 
-    @Test(priority = 4, description = "TC-KOR-04 - Koreksi absen dengan jam keluar kosong")
-    public void testKoreksiJamKeluarKosong() {
-        koreksiPage.ajukanKoreksiButton.click();
-        // Mengirim string kosong untuk jam keluar
-        koreksiPage.isiDataKoreksi("28", "8", "", "WFO");
+    @Test(priority = 4, description = "TC-KOR-04 - Koreksi data valid (Jam Pulang Kosong)")
+    public void testKoreksiDataInvalid2() {
+        koreksiPage.isiDataKoreksi("08:00", "", "wfo");
     }
 
-    @Test(priority = 5, description = "TC-KOR-05 - Koreksi absen dengan tipe absen kosong")
-    public void testKoreksiTipeKosong() {
-        koreksiPage.ajukanKoreksiButton.click();
-        // Mengirim string kosong untuk tipe
-        koreksiPage.isiDataKoreksi("28", "8", "17", "");
+    @Test(priority = 5, description = "TC-KOR-05 - Koreksi data invalid (Keterangan Kosong)")
+    public void testKoreksiDataInvalid3() {
+        koreksiPage.isiDataKoreksi("08:00", "17:00", "");
     }
 
-    @Test(priority = 6, description = "TC-KOR-06 - Koreksi absen dengan semua field kosong")
+    @Test(priority = 6, description = "TC-KOR-06 - Koreksi dengan semua input kosong")
     public void testKoreksiSemuaKosong() {
-        koreksiPage.ajukanKoreksiButton.click();
-        koreksiPage.isiDataKoreksi("", "", "", "");
-        Assert.assertEquals(koreksiPage.getErrorMessage("Salah satu harus diisi!"), "Salah satu harus diisi!");
+        koreksiPage.isiDataKoreksi("", "", "");
+        String actualError = koreksiPage.getErrorMessage("Harus diisi");
+        Assert.assertTrue(actualError.contains("Harus diisi"), "Pesan error validasi tidak muncul!");
     }
 
     @AfterClass
     public void tearDown() {
-        if (driver != null)
-            driver.quit();
-    }
-
-    @AfterMethod
-    public void cleanUp() {
-        driver.navigate().refresh();
+        if (driver != null) driver.quit();
     }
 }

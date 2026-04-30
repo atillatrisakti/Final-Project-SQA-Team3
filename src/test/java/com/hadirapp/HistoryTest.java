@@ -38,16 +38,16 @@ public class HistoryTest {
         wait.until(ExpectedConditions.urlContains("absent"));
     }
 
-    @Test(priority = 1, description = "TC-HIS-01 - Verifikasi navigasi ke halaman activity melalui tombol Selengkapnya")
-    public void testKlikSelengkapnya() {
-        historyPage.klikSelengkapnya();
+    @Test(priority = 1, description = "TC-HIS-01 - Verifikasi navigasi ke halaman activity melalui menu Absensi")
+    public void testKlikAbsensi() {
+        historyPage.klikAbsensi();
         wait.until(ExpectedConditions.urlContains("/activity"));
         Assert.assertTrue(driver.getCurrentUrl().contains("/activity"), "Gagal navigasi ke halaman Activity");
     }
 
-    @Test(priority = 2, description = "TC-HIS-02 - Verifikasi navigasi ke halaman activity melalui menu Absensi")
-    public void testKlikAbsensi() {
-        historyPage.klikAbsensi();
+    @Test(priority = 2, description = "TC-HIS-02 - Verifikasi navigasi ke halaman activity melalui tombol Selengkapnya")
+    public void testKlikSelengkapnya() {
+        historyPage.klikSelengkapnya();
         wait.until(ExpectedConditions.urlContains("/activity"));
         Assert.assertTrue(driver.getCurrentUrl().contains("/activity"), "Gagal navigasi ke halaman Activity");
     }
