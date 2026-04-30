@@ -5,7 +5,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import java.time.Duration;
+import com.hadirapp.utlis.WaitUtils;
 
 public class HistoryPage {
     private WebDriver driver;
@@ -19,7 +19,7 @@ public class HistoryPage {
 
     public HistoryPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        this.wait = WaitUtils.getExplicitWait(driver, 20);
         PageFactory.initElements(driver, this);
     }
 

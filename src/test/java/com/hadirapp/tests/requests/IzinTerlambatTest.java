@@ -1,41 +1,30 @@
-package com.hadirapp.izin;
+package com.hadirapp.tests.requests;
 
+import com.hadirapp.base.BaseTest;
 import com.hadirapp.pages.Auth.LoginPage;
 import com.hadirapp.pages.Requests.IzinPage;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import com.hadirapp.utlis.Constants;
+import com.hadirapp.utlis.WaitUtils;
 import org.testng.Assert;
-import org.testng.annotations.*;
-import java.time.Duration;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
 import java.util.List;
 
-public class IzinTerlambatTest {
-    WebDriver driver;
-    WebDriverWait wait;
-    IzinPage izinPage;
-
-    @BeforeClass
-    public void setup() {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
-        driver.get("https://magang.dikahadir.com/absen/login");
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.login("mafira@gmail.com", "mafira123");
-        
-        wait.until(ExpectedConditions.urlContains("apps"));
-        izinPage = new IzinPage(driver);
-    }
+public class IzinTerlambatTest extends BaseTest {
+    private IzinPage izinPage;
+    private LoginPage loginPage;
 
     @BeforeMethod
-    public void navigate() {
+    public void setUpPages() {
+        loginPage = new LoginPage(driver);
+        izinPage = new IzinPage(driver);
+        
+        loginPage.doLogin(Constants.EMAIL, Constants.PASSWORD);
+        WaitUtils.waitForUrlContains(driver, "apps", 10);
+
         if (!driver.getCurrentUrl().contains("/permit")) { 
-            driver.get("https://magang.dikahadir.com/apps/absent/permit"); 
+            driver.get(Constants.URL.replace("absen/login", "apps/absent/permit")); 
         }
     }
 
@@ -83,15 +72,4 @@ public class IzinTerlambatTest {
         Assert.assertTrue(errors.contains("Jam Harus diisi!"));
         Assert.assertTrue(errors.contains("Keterangan Harus diisi!"));
     }
-
-    @AfterClass
-    public void tearDown() {
-        if (driver != null) driver.quit();
-    }
-
-    @AfterMethod
-    public void cleanUp() {
-        driver.navigate().refresh();
-    }
-    
 }

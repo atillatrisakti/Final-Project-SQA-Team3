@@ -20,7 +20,7 @@ public class LogoutTest extends BaseTest {
         logoutPage = new LogoutPage(driver);
     }
 
-    @Test(description = "TC-OUT-01 - Logout berhasil")
+    @Test(priority = 1, description = "TC-OUT-01 - Logout berhasil")
     public void testLogoutSuccess(){
         loginPage.doLogin(Constants.EMAIL, Constants.PASSWORD);
         WaitUtils.waitForUrlToBe(driver, Constants.DASHBOARD_URL, 10);
@@ -29,7 +29,7 @@ public class LogoutTest extends BaseTest {
         Assert.assertEquals(driver.getCurrentUrl(), Constants.URL);
     }
 
-    @Test(description = "TC-OUT-02 - Akses halaman Dashboard/Home setelah logout (Back Button)")
+    @Test(priority = 2, description = "TC-OUT-02 - Akses halaman Dashboard/Home setelah logout (Back Button)")
     public void testLogoutBackBtn(){
         loginPage.doLogin(Constants.EMAIL, Constants.PASSWORD);
         WaitUtils.waitForUrlToBe(driver, Constants.DASHBOARD_URL, 10);
@@ -40,7 +40,7 @@ public class LogoutTest extends BaseTest {
         Assert.assertEquals(driver.getCurrentUrl(), Constants.URL);
     }
 
-    @Test(description = "TC-OUT-03 - Akses halaman Dashboard/Home setelah logout (Direct URL)")
+    @Test(priority = 3, description = "TC-OUT-03 - Akses halaman Dashboard/Home setelah logout (Direct URL)")
     public void testLogoutDirectUrl(){
         loginPage.doLogin(Constants.EMAIL, Constants.PASSWORD);
         WaitUtils.waitForUrlToBe(driver, Constants.DASHBOARD_URL, 10);

@@ -18,14 +18,14 @@ public class ResetPasswordTest extends BaseTest {
         resetPasswordPage = new ResetPasswordPage(driver);
     }
 
-    @Test(description = "TC-RST-01 - Navigasi ke halaman Request Lupa Password")
+    @Test(priority = 1, description = "TC-RST-01 - Navigasi ke halaman Request Lupa Password")
     public void testNavigateToRequestResetPasswordPage() {
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 10);
         Assert.assertEquals(driver.getCurrentUrl(), Constants.RESET_PASS_URL);
     }
 
-    @Test(description = "TC-RST-02 - Request reset password dengan email yang sudah terdaftar")
+    @Test(priority = 2, description = "TC-RST-02 - Request reset password dengan email yang sudah terdaftar")
     public void testRequestResetPasswordValid(){
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);
@@ -34,7 +34,7 @@ public class ResetPasswordTest extends BaseTest {
         Assert.assertTrue(resetPasswordPage.getAlertMessage().contains("Link reset password terkirim"));
     }
 
-    @Test(description = "TC-RST-03 - Request reset password dengan email kosong")
+    @Test(priority = 3, description = "TC-RST-03 - Request reset password dengan email kosong")
     public void testRequestResetPasswordEmpty(){
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);
@@ -43,7 +43,7 @@ public class ResetPasswordTest extends BaseTest {
         Assert.assertTrue(resetPasswordPage.getAlertMessage().contains("User not found"));
     }
 
-    @Test(description = "TC-RST-04 - Request reset password dengan email tidak terdaftar")
+    @Test(priority = 4, description = "TC-RST-04 - Request reset password dengan email tidak terdaftar")
     public void testRequestResetPasswordInvalidEmail(){
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);
@@ -52,7 +52,7 @@ public class ResetPasswordTest extends BaseTest {
         Assert.assertTrue(resetPasswordPage.getAlertMessage().contains("User not found"));
     }
 
-    @Test(description = "TC-RST-05 - Request reset password dengan format email tidak valid")
+    @Test(priority = 5, description = "TC-RST-05 - Request reset password dengan format email tidak valid")
     public void testRequestResetPasswordInvalidFormat(){
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);
@@ -60,7 +60,7 @@ public class ResetPasswordTest extends BaseTest {
         Assert.assertTrue(resetPasswordPage.getActiveValidationMessage().contains("Please include an '@'"));
     }
 
-    @Test(description = "TC-RST-06 - Memastikan tombol 'Kembali ke halaman Login' berfungsi")
+    @Test(priority = 6, description = "TC-RST-06 - Memastikan tombol 'Kembali ke halaman Login' berfungsi")
     public void testNavigateToLoginPage() {
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);
@@ -69,7 +69,7 @@ public class ResetPasswordTest extends BaseTest {
         Assert.assertEquals(driver.getCurrentUrl(), Constants.URL);
     }
 
-    @Test(description = "TC-RST-07 - Submit reset password dengan semua field kosong")
+    @Test(priority = 7, description = "TC-RST-07 - Submit reset password dengan semua field kosong")
     public void testResetPasswordAllEmpty() {
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);
@@ -80,7 +80,7 @@ public class ResetPasswordTest extends BaseTest {
         Assert.assertEquals(resetPasswordPage.getActiveValidationMessage(), "Please fill out this field.");
     }
 
-    @Test(description = "TC-RST-08 - Konfirmasi password tidak sama dengan password baru")
+    @Test(priority = 8, description = "TC-RST-08 - Konfirmasi password tidak sama dengan password baru")
     public void testResetPasswordMismatch() {
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);
@@ -92,7 +92,7 @@ public class ResetPasswordTest extends BaseTest {
         Assert.assertTrue(resetPasswordPage.getAlertMessage().contains("password tidak sama"));
     }
 
-    @Test(description = "TC-RST-09 - Memasukkan password < 8 karakter")
+    @Test(priority = 9, description = "TC-RST-09 - Memasukkan password < 8 karakter")
     public void testResetPasswordLength() {
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);
@@ -104,7 +104,7 @@ public class ResetPasswordTest extends BaseTest {
         Assert.assertTrue(resetPasswordPage.getAlertMessage().contains("password harus lebih"));
     }
 
-    @Test(description = "TC-RST-10 - Submit reset password dengan field password kosong")
+    @Test(priority = 10, description = "TC-RST-10 - Submit reset password dengan field password kosong")
     public void testResetPasswordEmpty() {
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);
@@ -116,7 +116,7 @@ public class ResetPasswordTest extends BaseTest {
         Assert.assertTrue(resetPasswordPage.getAlertMessage().contains("password harus lebih"));
     }
 
-    @Test(description = "TC-RST-11 - Submit reset password dengan field OTP kosong")
+    @Test(priority = 11, description = "TC-RST-11 - Submit reset password dengan field OTP kosong")
     public void testResetPasswordOTPEmpty() {
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);
@@ -127,7 +127,7 @@ public class ResetPasswordTest extends BaseTest {
         Assert.assertEquals(resetPasswordPage.getActiveValidationMessage(), "Please fill out this field.");
     }
 
-    @Test(description = "TC-RST-12 - Submit reset password dengan data lengkap tapi OTP salah/invalid")
+    @Test(priority = 12, description = "TC-RST-12 - Submit reset password dengan data lengkap tapi OTP salah/invalid")
     public void testResetPasswordInvalidOTP() {
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);

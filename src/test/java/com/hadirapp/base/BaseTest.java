@@ -13,7 +13,7 @@ public class BaseTest {
 
     @BeforeMethod
     public void setup() {
-        DriverSingleton.getInstance("chrome");
+        DriverSingleton.getInstance(Constants.CHROME);
         driver = DriverSingleton.getDriver();
         driver.get(Constants.URL);
     }

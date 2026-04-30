@@ -1,4 +1,4 @@
-package com.hadirapp.izin;
+package com.hadirapp.tests.requests;
 
 import com.hadirapp.pages.Auth.LoginPage;
 import com.hadirapp.pages.Requests.IzinPage;
@@ -26,7 +26,7 @@ public class IzinPulangCepatTest {
 
         driver.get("https://magang.dikahadir.com/absen/login");
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.login("mafira@gmail.com", "mafira123");
+        loginPage.doLogin("mafira@gmail.com", "mafira123");
         
         wait.until(ExpectedConditions.urlContains("apps"));
         izinPage = new IzinPage(driver);

@@ -1,42 +1,31 @@
-package com.hadirapp;
+package com.hadirapp.tests.attendance;
 
+import com.hadirapp.base.BaseTest;
 import com.hadirapp.pages.Attendance.KoreksiAbsenPage;
 import com.hadirapp.pages.Auth.LoginPage;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
+import com.hadirapp.utlis.Constants;
+import com.hadirapp.utlis.WaitUtils;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.*;
-import java.time.Duration;
-import java.util.List;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
-public class KoreksiAbsenTest {
-    WebDriver driver;
-    WebDriverWait wait;
-    LoginPage loginPage;
-    KoreksiAbsenPage koreksiPage;
-
-    @BeforeClass
-    public void setup() {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
-        driver.get("https://magang.dikahadir.com/absen/login");
-        loginPage = new LoginPage(driver);
-        loginPage.login("mafira@gmail.com", "mafira123");
-
-        wait.until(ExpectedConditions.urlContains("apps"));
-        koreksiPage = new KoreksiAbsenPage(driver);
-    }
+public class KoreksiAbsenTest extends BaseTest {
+    private LoginPage loginPage;
+    private KoreksiAbsenPage koreksiPage;
 
     @BeforeMethod
-    public void navigate() {
+    public void setUpPages() {
+        loginPage = new LoginPage(driver);
+        koreksiPage = new KoreksiAbsenPage(driver);
+        
+        if (driver.getCurrentUrl().contains("login")) {
+            loginPage.doLogin(Constants.EMAIL, Constants.PASSWORD);
+            WaitUtils.waitForUrlContains(driver, "apps", 10);
+        }
+
         if (!driver.getCurrentUrl().contains("/correction")) {
-            driver.get("https://magang.dikahadir.com/apps/absent/correction");
+            driver.get(Constants.URL.replace("absen/login", "apps/absent/correction"));
         }
     }
 
@@ -49,8 +38,7 @@ public class KoreksiAbsenTest {
 
     @Test(priority = 2, description = "TC-KOR-02 - Koreksi absen dengan data valid")
     public void testKoreksiDataValid() {
-        // Tambahkan wait agar tidak klik tombol sebelum elemen siap
-        wait.until(ExpectedConditions.elementToBeClickable(koreksiPage.ajukanKoreksiButton)).click();
+        WaitUtils.getExplicitWait(driver, 10).until(ExpectedConditions.elementToBeClickable(koreksiPage.ajukanKoreksiButton)).click();
         koreksiPage.isiDataKoreksi("28", "8", "17", "WFO");
         String actualMessage = koreksiPage.getAlertSuccessMessage();
         Assert.assertTrue(actualMessage.contains("Berhasil koreksi absen"),
@@ -60,21 +48,18 @@ public class KoreksiAbsenTest {
     @Test(priority = 3, description = "TC-KOR-03 - Koreksi absen dengan jam masuk kosong")
     public void testKoreksiJamMasukKosong() {
         koreksiPage.ajukanKoreksiButton.click();
-        // Mengirim string kosong untuk jam masuk
         koreksiPage.isiDataKoreksi("28", "", "17", "WFO");
     }
 
     @Test(priority = 4, description = "TC-KOR-04 - Koreksi absen dengan jam keluar kosong")
     public void testKoreksiJamKeluarKosong() {
         koreksiPage.ajukanKoreksiButton.click();
-        // Mengirim string kosong untuk jam keluar
         koreksiPage.isiDataKoreksi("28", "8", "", "WFO");
     }
 
     @Test(priority = 5, description = "TC-KOR-05 - Koreksi absen dengan tipe absen kosong")
     public void testKoreksiTipeKosong() {
         koreksiPage.ajukanKoreksiButton.click();
-        // Mengirim string kosong untuk tipe
         koreksiPage.isiDataKoreksi("28", "8", "17", "");
     }
 
@@ -83,16 +68,5 @@ public class KoreksiAbsenTest {
         koreksiPage.ajukanKoreksiButton.click();
         koreksiPage.isiDataKoreksi("", "", "", "");
         Assert.assertEquals(koreksiPage.getErrorMessage("Salah satu harus diisi!"), "Salah satu harus diisi!");
-    }
-
-    @AfterClass
-    public void tearDown() {
-        if (driver != null)
-            driver.quit();
-    }
-
-    @AfterMethod
-    public void cleanUp() {
-        driver.navigate().refresh();
     }
 }
