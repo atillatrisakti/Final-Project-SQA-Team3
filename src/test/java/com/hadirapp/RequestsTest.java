@@ -25,6 +25,7 @@ public class RequestsTest {
     private LoginPage loginPage;
     private AbsenPage absenPage;
     private LemburPage lemburPage;
+    private boolean testCaseResultLogged;
 
     @BeforeMethod
     public void setUp() {
@@ -46,7 +47,8 @@ public class RequestsTest {
             absenPage.clickLemburButton();
 
             // Tahap 5: validasi akhir TC-LMB-01, tombol atau marker pengajuan lembur harus terlihat.
-            Assert.assertTrue(absenPage.isAjukanLemburVisible(),
+            boolean ajukanLemburVisible = absenPage.isAjukanLemburVisible();
+            validateTestCaseResult("TC-LMB-01", ajukanLemburVisible,
                     "TC-LMB-01 gagal: tombol atau marker Ajukan Lembur tidak muncul.");
         });
     }
@@ -80,7 +82,7 @@ public class RequestsTest {
             boolean submitResultVisible = lemburPage.waitForSubmissionResult();
 
             // Tahap 6: validasi akhir TC-LMB-02 dengan memastikan feedback hasil submit atau kembalinya state halaman berhasil muncul.
-            Assert.assertTrue(submitResultVisible,
+            validateTestCaseResult("TC-LMB-02", submitResultVisible,
                     "TC-LMB-02 gagal: feedback hasil submit lembur tidak muncul.");
         });
     }
@@ -110,7 +112,7 @@ public class RequestsTest {
             boolean jamMasukValidationVisible = lemburPage.waitForJamMasukRequiredMessage();
 
             // Tahap 6: validasi akhir TC-LMB-03, sistem harus menampilkan pesan bahwa Jam Masuk wajib diisi.
-            Assert.assertTrue(jamMasukValidationVisible,
+            validateTestCaseResult("TC-LMB-03", jamMasukValidationVisible,
                     "TC-LMB-03 gagal: pesan validasi 'Jam masuk harus di isi!' tidak muncul.");
         });
     }
@@ -140,7 +142,7 @@ public class RequestsTest {
             boolean jamKeluarValidationVisible = lemburPage.waitForJamKeluarRequiredMessage();
 
             // Tahap 6: validasi akhir TC-LMB-04, sistem harus menampilkan pesan bahwa Jam Keluar wajib diisi.
-            Assert.assertTrue(jamKeluarValidationVisible,
+            validateTestCaseResult("TC-LMB-04", jamKeluarValidationVisible,
                     "TC-LMB-04 gagal: pesan validasi 'Jam Keluar harus di isi!' tidak muncul.");
         });
     }
@@ -170,7 +172,7 @@ public class RequestsTest {
             boolean catatanValidationVisible = lemburPage.waitForCatatanMinimumCharacterMessage();
 
             // Tahap 6: validasi akhir TC-LMB-05, sistem harus menampilkan pesan bahwa Catatan minimal 5 karakter.
-            Assert.assertTrue(catatanValidationVisible,
+            validateTestCaseResult("TC-LMB-05", catatanValidationVisible,
                     "TC-LMB-05 gagal: pesan validasi 'Masukan minimal 5 karakter' tidak muncul.");
         });
     }
@@ -198,12 +200,14 @@ public class RequestsTest {
             boolean catatanValidationVisible = lemburPage.waitForCatatanMinimumCharacterMessage();
 
             // Tahap 6: validasi akhir TC-LMB-06, sistem harus menampilkan semua pesan error pada field yang wajib diisi.
-            Assert.assertTrue(jamMasukValidationVisible,
-                    "TC-LMB-06 gagal: pesan validasi 'Jam masuk harus di isi!' tidak muncul.");
-            Assert.assertTrue(jamKeluarValidationVisible,
-                    "TC-LMB-06 gagal: pesan validasi 'Jam Keluar harus di isi!' tidak muncul.");
-            Assert.assertTrue(catatanValidationVisible,
-                    "TC-LMB-06 gagal: pesan validasi 'Masukan minimal 5 karakter' tidak muncul.");
+            boolean allRequiredValidationVisible = jamMasukValidationVisible
+                    && jamKeluarValidationVisible
+                    && catatanValidationVisible;
+            validateTestCaseResult("TC-LMB-06", allRequiredValidationVisible,
+                    "TC-LMB-06 gagal: pesan validasi wajib belum lengkap. "
+                            + "Jam Masuk=" + jamMasukValidationVisible
+                            + ", Jam Keluar=" + jamKeluarValidationVisible
+                            + ", Catatan=" + catatanValidationVisible);
         });
     }
 
@@ -235,8 +239,43 @@ public class RequestsTest {
             lemburPage.clickReset();
 
             // Tahap 6: validasi akhir TC-LMB-07, semua field harus kembali kosong setelah tombol Reset ditekan.
-            Assert.assertTrue(lemburPage.waitForFormFieldsEmpty(),
-                    "TC-LMB-07 gagal: masih ada field yang terisi setelah tombol Reset diklik.");
+            boolean allFieldsEmptyAfterReset = lemburPage.waitForFormFieldsEmpty();
+            validateTestCaseResult("TC-LMB-07", allFieldsEmptyAfterReset,
+                    "TC-LMB-07 gagal: masih ada field yang terisi setelah tombol Reset diklik. "
+                            + lemburPage.getFormFieldValuesSummary());
+        });
+    }
+
+    @Test(priority = 8, description = "TC-LMB-08 - Pengajuan lembur saat belum absen keluar dan belum ada jam lembur di hari yang sama")
+    public void tcLmb08SubmitOvertimeBeforeClockOutWithoutExistingOvertime() {
+        runTestCase("TC-LMB-08", () -> {
+            // Precondition: user berhasil login, belum melakukan absensi keluar, dan belum ada jam lembur di hari yang sama.
+            // Test dimulai dari login valid lalu masuk ke halaman absensi secara langsung.
+            loginToAbsentPage();
+
+            // Tahap 1: klik tombol Lembur.
+            absenPage.clickLemburButton();
+
+            // Tahap 2: klik tombol Ajukan Lembur.
+            lemburPage.clickAjukanLembur();
+
+            // Tahap 3: isi semua field dengan data yang sama dengan TC-LMB-02.
+            LocalDate tanggalLembur = LocalDate.now();
+            LocalDateTime jamMasuk = tanggalLembur.atTime(8, 0);
+            LocalDateTime jamKeluar = tanggalLembur.atTime(23, 0);
+            lemburPage.fillOvertimeForm(
+                    jamMasuk,
+                    jamKeluar,
+                    "Menyelesaikan regression test modul absensi dan pengajuan lembur.",
+                    "Pengajuan dibuat otomatis oleh Selenium dengan data valid.");
+
+            // Tahap 4: klik button Ajukan dan tunggu popup proses validator muncul.
+            lemburPage.submitOvertime();
+            boolean validatorPopupVisible = lemburPage.waitForValidatorProcessingPopup();
+
+            // Expected result: muncul popup "permintaan request lembur anda sedang diproses validator".
+            validateTestCaseResult("TC-LMB-08", validatorPopupVisible,
+                    "TC-LMB-08 gagal: popup 'permintaan request lembur anda sedang diproses validator' tidak muncul.");
         });
     }
 
@@ -261,18 +300,32 @@ public class RequestsTest {
     }
 
     private void runTestCase(String testCaseId, Runnable steps) {
+        testCaseResultLogged = false;
         try {
             steps.run();
-            logTestCaseResult(testCaseId, "pass");
         } catch (AssertionError | RuntimeException ex) {
-            logTestCaseResult(testCaseId, "failed");
+            if (!testCaseResultLogged) {
+                logTestCaseResult(testCaseId, "Fail");
+            }
             throw ex;
         }
     }
 
+    private void validateTestCaseResult(String testCaseId, boolean condition, String failureMessage) {
+        if (condition) {
+            logTestCaseResult(testCaseId, "Pass");
+        } else if (!condition) {
+            logTestCaseResult(testCaseId, "Fail");
+        }
+
+        Assert.assertTrue(condition, failureMessage);
+    }
+
     private void logTestCaseResult(String testCaseId, String result) {
         String message = testCaseId + " = " + result;
-        Reporter.log(message, true);
+        testCaseResultLogged = true;
+        System.out.println(message);
+        Reporter.log(message, false);
     }
 
 }

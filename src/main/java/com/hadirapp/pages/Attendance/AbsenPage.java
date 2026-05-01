@@ -3,6 +3,9 @@ package com.hadirapp.pages.Attendance;
 import java.time.Duration;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -33,17 +36,39 @@ public class AbsenPage {
     }
     
     public void clickLemburButton() {
-        // First: wait for element to be clickable and get reference
-        WebElement lemburLink = wait.until(ExpectedConditions.elementToBeClickable(LEMBUR_MENU_LINK));
-        // Click it
-        lemburLink.click();
-        // Wait for page to load new content (Ajukan Lembur button should appear)
+        clickLemburMenuWithRetry();
         wait.until(ExpectedConditions.presenceOfElementLocated(AJUKAN_LEMBUR_BUTTON));
-        // Add small delay for page to fully stabilize
+        wait.until(ExpectedConditions.visibilityOfElementLocated(AJUKAN_LEMBUR_BUTTON));
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+        }
+    }
+
+    private void clickLemburMenuWithRetry() {
+        for (int attempt = 0; attempt < 3; attempt++) {
+            try {
+                WebElement lemburLink = wait.until(ExpectedConditions.presenceOfElementLocated(LEMBUR_MENU_LINK));
+                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});",
+                        lemburLink);
+                wait.until(ExpectedConditions.elementToBeClickable(LEMBUR_MENU_LINK)).click();
+                return;
+            } catch (ElementClickInterceptedException | StaleElementReferenceException e) {
+                sleepBriefly();
+            }
+        }
+
+        WebElement lemburLink = wait.until(ExpectedConditions.presenceOfElementLocated(LEMBUR_MENU_LINK));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", lemburLink);
+    }
+
+    private void sleepBriefly() {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while waiting for Lembur menu to stabilize.", e);
         }
     }
     

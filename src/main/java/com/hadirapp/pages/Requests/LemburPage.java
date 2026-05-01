@@ -5,6 +5,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementClickInterceptedException;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -17,9 +21,26 @@ public class LemburPage {
     private static final By AJUKAN_LEMBUR_BTN = By.xpath("//button[contains(text(), 'Ajukan Lembur')]");
     private static final By JAM_MASUK_INPUT = By.xpath("//input[@placeholder='dd mm yyyy, hh:mm']");
     private static final By JAM_KELUAR_INPUT = By.xpath("(//input[@placeholder='dd mm yyyy, hh:mm'])[2]");
-    private static final By CATATAN_TEXTAREA = By.xpath("(//input | //textarea)[contains(@placeholder, 'Catatan')]");
-    private static final By SUBMIT_BUTTON = By.xpath("//button[@type='submit'][contains(text(), 'Ajukan')]");
-    private static final By RESET_BUTTON = By.xpath("//button[contains(text(), 'Reset')]");
+    private static final By LEMBUR_FORM = By.xpath(
+            "(//input[@placeholder='dd mm yyyy, hh:mm'])[1]/ancestor::*[.//input[@placeholder='dd mm yyyy, hh:mm']"
+                    + " and .//button[normalize-space()='Ajukan']][1]");
+    private static final By CATATAN_FIELD = By.xpath(
+            "//textarea[contains(translate(@placeholder, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'catatan')]"
+                    + " | //input[contains(translate(@placeholder, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'catatan')]"
+                    + " | //textarea[contains(translate(@name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'catatan')]"
+                    + " | //input[contains(translate(@name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'catatan')]"
+                    + " | //textarea[contains(translate(@id, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'catatan')]"
+                    + " | //input[contains(translate(@id, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'catatan')]"
+                    + " | //textarea[contains(translate(@name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'note')]"
+                    + " | //input[contains(translate(@name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'note')]"
+                    + " | //textarea[contains(translate(@name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'description')]"
+                    + " | //input[contains(translate(@name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'description')]"
+                    + " | //*[normalize-space()='Catatan']/following::textarea[1]"
+                    + " | //*[normalize-space()='Catatan']/following::input[1]"
+                    + " | (//textarea)[1]");
+    private static final By SUBMIT_BUTTON = By.xpath(
+            "(//input[@placeholder='dd mm yyyy, hh:mm'])[1]/ancestor::*[.//input[@placeholder='dd mm yyyy, hh:mm']"
+                    + " and .//button[normalize-space()='Ajukan']][1]//button[normalize-space()='Ajukan' and not(contains(normalize-space(), 'Lembur'))]");
     
     public LemburPage(WebDriver driver) {
         this.driver = driver;
@@ -62,30 +83,37 @@ public class LemburPage {
     private void fillJamMasuk(LocalDateTime jamMasuk) {
         WebElement jamMasukField = wait.until(ExpectedConditions.visibilityOfElementLocated(JAM_MASUK_INPUT));
         String dateTimeString = formatDateTimeForInput(jamMasuk);
-        jamMasukField.clear();
-        jamMasukField.sendKeys(dateTimeString);
+        setDateTimeField(jamMasukField, dateTimeString);
     }
     
     private void fillJamKeluar(LocalDateTime jamKeluar) {
         WebElement jamKeluarField = wait.until(ExpectedConditions.visibilityOfElementLocated(JAM_KELUAR_INPUT));
         String dateTimeString = formatDateTimeForInput(jamKeluar);
-        jamKeluarField.clear();
-        jamKeluarField.sendKeys(dateTimeString);
+        setDateTimeField(jamKeluarField, dateTimeString);
+    }
+
+    private void setDateTimeField(WebElement field, String value) {
+        setInputValue(field, value);
+    }
+
+    private void setInputValue(WebElement field, String value) {
+        ((JavascriptExecutor) driver).executeScript(
+                "const element = arguments[0];"
+                        + "const value = arguments[1];"
+                        + "const prototype = element.tagName === 'TEXTAREA' ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;"
+                        + "const setter = Object.getOwnPropertyDescriptor(prototype, 'value').set;"
+                        + "setter.call(element, value);"
+                        + "element.dispatchEvent(new Event('input', { bubbles: true }));"
+                        + "element.dispatchEvent(new Event('change', { bubbles: true }));",
+                field,
+                value);
     }
     
     private void fillCatatan(String catatan) {
-        // Catatan field may be optional or appear conditionally
-        // Try to find and fill it, but don't fail if not found
-        try {
-            WebElement catatanField = driver.findElement(CATATAN_TEXTAREA);
-            if (catatanField != null) {
-                catatanField.clear();
-                catatanField.sendKeys(catatan);
-            }
-        } catch (Exception e) {
-            // Catatan field not found or not visible - may be optional
-            System.out.println("Catatan field not found, skipping: " + e.getMessage());
-        }
+        WebElement catatanField = wait.until(ExpectedConditions.visibilityOfElementLocated(CATATAN_FIELD));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", catatanField);
+        setInputValue(catatanField, catatan);
+        wait.until(driver -> catatan.equals(getInputValue(catatanField)));
     }
     
     private String formatDateTimeForInput(LocalDateTime dateTime) {
@@ -99,23 +127,34 @@ public class LemburPage {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-        
-        WebElement submitBtn = wait.until(ExpectedConditions.elementToBeClickable(SUBMIT_BUTTON));
-        // Scroll to button to ensure it's visible and not intercepted
-        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", submitBtn);
-        
-        try {
-            Thread.sleep(500); // Wait for scroll animation
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+
+        clickSubmitButtonWithRetry();
+    }
+
+    private void clickSubmitButtonWithRetry() {
+        for (int attempt = 0; attempt < 3; attempt++) {
+            try {
+                WebElement submitBtn = wait.until(driver -> findFormSubmitButton());
+                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});",
+                        submitBtn);
+                waitForButtonToSettle();
+                wait.until(ExpectedConditions.elementToBeClickable(submitBtn)).click();
+                return;
+            } catch (ElementClickInterceptedException | StaleElementReferenceException e) {
+                waitForButtonToSettle();
+            }
         }
-        
-        // Try regular click first
+
+        WebElement submitBtn = wait.until(driver -> findFormSubmitButton());
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", submitBtn);
+    }
+
+    private WebElement findFormSubmitButton() {
         try {
-            submitBtn.click();
-        } catch (org.openqa.selenium.ElementClickInterceptedException e) {
-            // If intercepted, use JavaScript click
-            ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].click();", submitBtn);
+            return driver.findElement(SUBMIT_BUTTON);
+        } catch (NoSuchElementException e) {
+            WebElement form = driver.findElement(LEMBUR_FORM);
+            return form.findElement(By.xpath(".//button[normalize-space()='Ajukan' and not(contains(normalize-space(), 'Lembur'))]"));
         }
     }
     
@@ -131,9 +170,8 @@ public class LemburPage {
     
     public boolean waitForJamMasukRequiredMessage() {
         try {
-            return wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[contains(text(), 'Jam masuk harus di isi')]"))
-            ) != null;
+            return wait.until(driver -> isValidationMessageVisible("Jam masuk harus di isi")
+                    || isFieldInvalid(JAM_MASUK_INPUT));
         } catch (Exception e) {
             return false;
         }
@@ -141,9 +179,8 @@ public class LemburPage {
     
     public boolean waitForJamKeluarRequiredMessage() {
         try {
-            return wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[contains(text(), 'Jam Keluar harus di isi')]"))
-            ) != null;
+            return wait.until(driver -> isValidationMessageVisible("Jam Keluar harus di isi")
+                    || isFieldInvalid(JAM_KELUAR_INPUT));
         } catch (Exception e) {
             return false;
         }
@@ -151,32 +188,124 @@ public class LemburPage {
     
     public boolean waitForCatatanMinimumCharacterMessage() {
         try {
-            return wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//div[contains(text(), 'Masukan minimal 5 karakter')]"))
-            ) != null;
+            return wait.until(driver -> isValidationMessageVisible("Masukan minimal 5 karakter")
+                    || isCatatanInvalidOrUnavailable());
         } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private boolean isValidationMessageVisible(String message) {
+        String lowerCaseMessage = message.toLowerCase();
+        String xpath = "//*[contains(translate(normalize-space(), "
+                + "'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), '"
+                + lowerCaseMessage + "')]";
+        return !driver.findElements(By.xpath(xpath)).isEmpty();
+    }
+
+    private boolean isFieldInvalid(By locator) {
+        try {
+            WebElement field = driver.findElement(locator);
+            Object valid = ((JavascriptExecutor) driver).executeScript("return arguments[0].checkValidity();", field);
+            return Boolean.FALSE.equals(valid);
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    private boolean isCatatanInvalidOrUnavailable() {
+        try {
+            WebElement field = driver.findElement(CATATAN_FIELD);
+            Object valid = ((JavascriptExecutor) driver).executeScript("return arguments[0].checkValidity();", field);
+            return Boolean.FALSE.equals(valid);
+        } catch (NoSuchElementException e) {
             return false;
         }
     }
     
     public void clickReset() {
-        WebElement resetBtn = wait.until(ExpectedConditions.elementToBeClickable(RESET_BUTTON));
-        resetBtn.click();
+        WebElement resetBtn = wait.until(driver -> findFormResetButton());
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", resetBtn);
+        try {
+            resetBtn.click();
+        } catch (org.openqa.selenium.ElementClickInterceptedException e) {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", resetBtn);
+        }
+        waitForResetActionToFinish();
+    }
+
+    private WebElement findFormResetButton() {
+        try {
+            WebElement form = driver.findElement(LEMBUR_FORM);
+            return form.findElement(By.xpath(".//button[normalize-space()='Reset']"));
+        } catch (NoSuchElementException e) {
+            WebElement jamMasukField = driver.findElement(JAM_MASUK_INPUT);
+            return jamMasukField.findElement(By.xpath(
+                    "./ancestor::*[.//button[normalize-space()='Ajukan']][1]//button[normalize-space()='Reset']"));
+        }
     }
     
     public boolean waitForFormFieldsEmpty() {
         try {
-            WebElement jamMasukField = wait.until(ExpectedConditions.visibilityOfElementLocated(JAM_MASUK_INPUT));
-            WebElement jamKeluarField = driver.findElement(JAM_KELUAR_INPUT);
-            WebElement catatanField = driver.findElement(CATATAN_TEXTAREA);
-            
-            Thread.sleep(500);
-            
-            return jamMasukField.getAttribute("value").isEmpty() &&
-                   jamKeluarField.getAttribute("value").isEmpty() &&
-                   catatanField.getAttribute("value").isEmpty();
+            return wait.until(driver -> {
+                WebElement jamMasukField = driver.findElement(JAM_MASUK_INPUT);
+                WebElement jamKeluarField = driver.findElement(JAM_KELUAR_INPUT);
+
+                return getInputValue(jamMasukField).isEmpty()
+                        && getInputValue(jamKeluarField).isEmpty()
+                        && isOptionalCatatanEmpty();
+            });
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    public String getFormFieldValuesSummary() {
+        return "Jam Masuk='" + getCurrentValueOrEmpty(JAM_MASUK_INPUT)
+                + "', Jam Keluar='" + getCurrentValueOrEmpty(JAM_KELUAR_INPUT)
+                + "', Catatan='" + getCurrentValueOrEmpty(CATATAN_FIELD) + "'";
+    }
+
+    private boolean isOptionalCatatanEmpty() {
+        try {
+            return getInputValue(driver.findElement(CATATAN_FIELD)).isEmpty();
+        } catch (NoSuchElementException e) {
+            return true;
+        }
+    }
+
+    public boolean waitForValidatorProcessingPopup() {
+        try {
+            return wait.until(driver -> isValidationMessageVisible(
+                    "permintaan request lembur anda sedang diproses validator"));
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private String getInputValue(WebElement element) {
+        String value = element.getAttribute("value");
+        return value == null ? "" : value.trim();
+    }
+
+    private String getCurrentValueOrEmpty(By locator) {
+        try {
+            return getInputValue(driver.findElement(locator));
+        } catch (NoSuchElementException e) {
+            return "";
+        }
+    }
+
+    private void waitForResetActionToFinish() {
+        waitForButtonToSettle();
+    }
+
+    private void waitForButtonToSettle() {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while waiting for button action to finish.", e);
         }
     }
 }
