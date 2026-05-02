@@ -99,7 +99,7 @@ public String getAlertMessage() {
 
 public boolean isAlertMessageDisplayed() {
     try {
-        WaitUtils.getExplicitWait(driver, 5).until(ExpectedConditions.visibilityOf(alertMessage));
+        WaitUtils.waitForElementVisible(driver, alertMessage, 5);
         return true;
     } catch (Exception e) {
         return false;

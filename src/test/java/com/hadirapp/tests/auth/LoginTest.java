@@ -22,6 +22,7 @@ public class LoginTest extends BaseTest {
 
     @Test(priority = 1, description = "TC-LOG-01- Login dengan data valid")
     public void testLoginValidData() {
+        log.info("Starting test: TC-LOG-01- Login dengan data valid");
         loginPage.doLogin(Constants.EMAIL, Constants.PASSWORD);
         WaitUtils.waitForUrlToBe(driver, Constants.DASHBOARD_URL, 10);
         Assert.assertEquals(driver.getCurrentUrl(), Constants.DASHBOARD_URL);
@@ -29,6 +30,7 @@ public class LoginTest extends BaseTest {
 
     @Test(priority = 2, description = "TC-LOG-02 - Login dengan email kosong")
     public void testLoginEmailEmpty() {
+        log.info("Starting test: TC-LOG-02 - Login dengan email kosong");
         loginPage.doLogin("", Constants.PASSWORD);
         Assert.assertTrue(loginPage.isErrorMessageDisplayed());
         Assert.assertEquals(loginPage.getErrorMessage(), "Akun tidak ditemukan");
@@ -36,6 +38,7 @@ public class LoginTest extends BaseTest {
 
     @Test(priority = 3, description = "TC-LOG-03 - Login dengan password kosong")
     public void testLoginPasswordEmpty() {
+        log.info("Starting test: TC-LOG-03 - Login dengan password kosong");
         loginPage.doLogin(Constants.EMAIL, "");
         Assert.assertTrue(loginPage.isErrorMessageDisplayed());
         Assert.assertEquals(loginPage.getErrorMessage(), "Email atau password salah");
@@ -43,6 +46,7 @@ public class LoginTest extends BaseTest {
 
     @Test(priority = 4, description = "TC-LOG-04 - Login dengan semua field kosong")
     public void testLoginAllEmpty() {
+        log.info("Starting test: TC-LOG-04 - Login dengan semua field kosong");
         loginPage.doLogin("", "");
         Assert.assertTrue(loginPage.isErrorMessageDisplayed());
         Assert.assertEquals(loginPage.getErrorMessage(), "Akun tidak ditemukan");
@@ -50,6 +54,7 @@ public class LoginTest extends BaseTest {
 
     @Test(priority = 5, description = "TC-LOG-05 - Login dengan email salah")
     public void testLoginEmailSalah() {
+        log.info("Starting test: TC-LOG-05 - Login dengan email salah");
         loginPage.doLogin("wrongemail@gmail.com", Constants.PASSWORD);
         Assert.assertTrue(loginPage.isErrorMessageDisplayed());
         Assert.assertEquals(loginPage.getErrorMessage(), "Akun tidak ditemukan");
@@ -57,6 +62,7 @@ public class LoginTest extends BaseTest {
 
     @Test(priority = 6, description = "TC-LOG-06 - Login dengan password salah")
     public void testLoginPasswordSalah() {
+        log.info("Starting test: TC-LOG-06 - Login dengan password salah");
         loginPage.doLogin(Constants.EMAIL, "wrongpassword");
         Assert.assertTrue(loginPage.isErrorMessageDisplayed());
         Assert.assertEquals(loginPage.getErrorMessage(), "Email atau password salah");
@@ -64,6 +70,7 @@ public class LoginTest extends BaseTest {
 
     @Test(priority = 7, description = "TC-LOG-07 - Navigasi ke halaman Registrasi")
     public void testNavigateToRegisterPage(){
+        log.info("Starting test: TC-LOG-07 - Navigasi ke halaman Registrasi");
         registerPage.clickRegisterButton();
         WaitUtils.waitForUrlToBe(driver, Constants.REGISTER_URL, 10);
         Assert.assertEquals(driver.getCurrentUrl(), Constants.REGISTER_URL);

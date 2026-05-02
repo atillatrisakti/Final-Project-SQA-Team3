@@ -1,0 +1,30 @@
+<configuration>
+
+    <!-- Appender untuk mencetak log ke Console (Terminal) -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- Format Log: Tanggal Jam [Thread] LEVEL NamaKelas - Pesan -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Appender untuk menyimpan log ke dalam File -->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>target/test-logs/automation.log</file>
+        <append>false</append> <!-- false artinya file akan ditimpa setiap kali test baru dijalankan -->
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Konfigurasi Root Logger (Mencakup seluruh project) -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </root>
+
+    <!-- Menonaktifkan log internal dari framework atau webdriver yang terlalu berisik -->
+    <logger name="org.openqa.selenium" level="WARN" />
+    <logger name="io.github.bonigarcia.wdm" level="WARN" />
+
+</configuration>

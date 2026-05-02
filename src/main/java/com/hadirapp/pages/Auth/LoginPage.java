@@ -56,7 +56,7 @@ public class LoginPage {
 
     public boolean isErrorMessageDisplayed() {
         try {
-            WaitUtils.getExplicitWait(driver, 5).until(ExpectedConditions.visibilityOf(errorMessage));
+            WaitUtils.waitForElementVisible(driver, errorMessage, 5);
             return true;
         } catch (Exception e) {
             return false;

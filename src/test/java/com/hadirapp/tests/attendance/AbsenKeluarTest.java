@@ -20,6 +20,7 @@ public class AbsenKeluarTest extends BaseTest {
 
     @Test(priority = 1)
     public void testAbsenPulangMafiraTanpaNote() {
+        log.info("Starting test: testAbsenPulangMafiraTanpaNote");
         loginPage.doLogin(Constants.EMAIL, Constants.PASSWORD);
         WaitUtils.waitForUrlContains(driver, "apps", 20);
         
@@ -33,6 +34,7 @@ public class AbsenKeluarTest extends BaseTest {
 
     @Test(priority = 2)
     public void testAbsenPulangHadirSqaDenganNote() {
+        log.info("Starting test: testAbsenPulangHadirSqaDenganNote");
         loginPage.doLogin(Constants.EMAIL_2, Constants.PASSWORD_2);
         WaitUtils.waitForUrlContains(driver, "apps", 20);
         

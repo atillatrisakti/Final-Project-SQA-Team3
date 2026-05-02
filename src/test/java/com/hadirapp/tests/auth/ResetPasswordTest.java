@@ -20,6 +20,7 @@ public class ResetPasswordTest extends BaseTest {
 
     @Test(priority = 1, description = "TC-RST-01 - Navigasi ke halaman Request Lupa Password")
     public void testNavigateToRequestResetPasswordPage() {
+        log.info("Starting test: TC-RST-01 - Navigasi ke halaman Request Lupa Password");
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 10);
         Assert.assertEquals(driver.getCurrentUrl(), Constants.RESET_PASS_URL);
@@ -27,6 +28,7 @@ public class ResetPasswordTest extends BaseTest {
 
     @Test(priority = 2, description = "TC-RST-02 - Request reset password dengan email yang sudah terdaftar")
     public void testRequestResetPasswordValid(){
+        log.info("Starting test: TC-RST-02 - Request reset password dengan email yang sudah terdaftar");
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);
         resetPasswordPage.requestResetPassword(Constants.EMAIL);
@@ -36,6 +38,7 @@ public class ResetPasswordTest extends BaseTest {
 
     @Test(priority = 3, description = "TC-RST-03 - Request reset password dengan email kosong")
     public void testRequestResetPasswordEmpty(){
+        log.info("Starting test: TC-RST-03 - Request reset password dengan email kosong");
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);
         resetPasswordPage.requestResetPassword(" ");
@@ -45,6 +48,7 @@ public class ResetPasswordTest extends BaseTest {
 
     @Test(priority = 4, description = "TC-RST-04 - Request reset password dengan email tidak terdaftar")
     public void testRequestResetPasswordInvalidEmail(){
+        log.info("Starting test: TC-RST-04 - Request reset password dengan email tidak terdaftar");
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);
         resetPasswordPage.requestResetPassword("invalidemail@gmail.com");
@@ -54,6 +58,7 @@ public class ResetPasswordTest extends BaseTest {
 
     @Test(priority = 5, description = "TC-RST-05 - Request reset password dengan format email tidak valid")
     public void testRequestResetPasswordInvalidFormat(){
+        log.info("Starting test: TC-RST-05 - Request reset password dengan format email tidak valid");
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);
         resetPasswordPage.requestResetPassword("invalid-email");
@@ -62,6 +67,7 @@ public class ResetPasswordTest extends BaseTest {
 
     @Test(priority = 6, description = "TC-RST-06 - Memastikan tombol 'Kembali ke halaman Login' berfungsi")
     public void testNavigateToLoginPage() {
+        log.info("Starting test: TC-RST-06 - Memastikan tombol 'Kembali ke halaman Login' berfungsi");
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);
         resetPasswordPage.clickBackToLoginButton();
@@ -71,6 +77,7 @@ public class ResetPasswordTest extends BaseTest {
 
     @Test(priority = 7, description = "TC-RST-07 - Submit reset password dengan semua field kosong")
     public void testResetPasswordAllEmpty() {
+        log.info("Starting test: TC-RST-07 - Submit reset password dengan semua field kosong");
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);
         resetPasswordPage.requestResetPassword(Constants.EMAIL);
@@ -82,6 +89,7 @@ public class ResetPasswordTest extends BaseTest {
 
     @Test(priority = 8, description = "TC-RST-08 - Konfirmasi password tidak sama dengan password baru")
     public void testResetPasswordMismatch() {
+        log.info("Starting test: TC-RST-08 - Konfirmasi password tidak sama dengan password baru");
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);
         resetPasswordPage.requestResetPassword(Constants.EMAIL);
@@ -94,6 +102,7 @@ public class ResetPasswordTest extends BaseTest {
 
     @Test(priority = 9, description = "TC-RST-09 - Memasukkan password < 8 karakter")
     public void testResetPasswordLength() {
+        log.info("Starting test: TC-RST-09 - Memasukkan password < 8 karakter");
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);
         resetPasswordPage.requestResetPassword(Constants.EMAIL);
@@ -106,6 +115,7 @@ public class ResetPasswordTest extends BaseTest {
 
     @Test(priority = 10, description = "TC-RST-10 - Submit reset password dengan field password kosong")
     public void testResetPasswordEmpty() {
+        log.info("Starting test: TC-RST-10 - Submit reset password dengan field password kosong");
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);
         resetPasswordPage.requestResetPassword(Constants.EMAIL);
@@ -118,6 +128,7 @@ public class ResetPasswordTest extends BaseTest {
 
     @Test(priority = 11, description = "TC-RST-11 - Submit reset password dengan field OTP kosong")
     public void testResetPasswordOTPEmpty() {
+        log.info("Starting test: TC-RST-11 - Submit reset password dengan field OTP kosong");
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);
         resetPasswordPage.requestResetPassword(Constants.EMAIL);
@@ -129,6 +140,7 @@ public class ResetPasswordTest extends BaseTest {
 
     @Test(priority = 12, description = "TC-RST-12 - Submit reset password dengan data lengkap tapi OTP salah/invalid")
     public void testResetPasswordInvalidOTP() {
+        log.info("Starting test: TC-RST-12 - Submit reset password dengan data lengkap tapi OTP salah/invalid");
         resetPasswordPage.clickForgotPasswordButton();
         WaitUtils.waitForUrlToBe(driver, Constants.RESET_PASS_URL, 5);
         resetPasswordPage.requestResetPassword(Constants.EMAIL);

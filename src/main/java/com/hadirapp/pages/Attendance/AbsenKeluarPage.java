@@ -3,13 +3,10 @@ package com.hadirapp.pages.Attendance;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import com.hadirapp.utlis.WaitUtils;
 
 public class AbsenKeluarPage {
     private WebDriver driver;
-    private WebDriverWait wait;
 
     @FindBy(name = "notes")
     private WebElement fieldNote;
@@ -28,23 +25,22 @@ public class AbsenKeluarPage {
 
     public AbsenKeluarPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = WaitUtils.getExplicitWait(driver, 20);
         PageFactory.initElements(driver, this);
     }
 
     public void klikKeluar() {
-        wait.until(ExpectedConditions.elementToBeClickable(btnKeluar));
+        WaitUtils.waitForElementClickable(driver, btnKeluar, 20);
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", btnKeluar);
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btnKeluar);
     }
 
     public void isiNote(String note) {
-        wait.until(ExpectedConditions.visibilityOf(fieldNote)).clear();
+        WaitUtils.waitForElementVisible(driver, fieldNote, 20).clear();
         fieldNote.sendKeys(note);
     }
 
     public void klikAbsenPulang() {
-        wait.until(ExpectedConditions.elementToBeClickable(btnAbsenPulang)).click();
+        WaitUtils.waitForElementClickable(driver, btnAbsenPulang, 20).click();
     }
 
     // Menggabungkan alur absen agar test lebih ringkas
@@ -55,8 +51,8 @@ public class AbsenKeluarPage {
         klikAbsenPulang();
     }
     public void logout() {
-        wait.until(ExpectedConditions.elementToBeClickable(btnMenu)).click();
-        wait.until(ExpectedConditions.elementToBeClickable(btnLogout)).click();
-        wait.until(ExpectedConditions.urlContains("login"));
+        WaitUtils.waitForElementClickable(driver, btnMenu, 20).click();
+        WaitUtils.waitForElementClickable(driver, btnLogout, 20).click();
+        WaitUtils.waitForUrlContains(driver, "login", 20);
     }
 }

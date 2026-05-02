@@ -3,12 +3,10 @@ package com.hadirapp.pages.Attendance;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.*;
-import org.openqa.selenium.support.ui.*;
 import com.hadirapp.utlis.WaitUtils;
 
 public class KoreksiAbsenPage {
     private WebDriver driver;
-    private WebDriverWait wait;
     private JavascriptExecutor js;
 
     @FindBy(xpath = "//button[normalize-space()='Ajukan Koreksi']")
@@ -34,7 +32,6 @@ public class KoreksiAbsenPage {
 
     public KoreksiAbsenPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = WaitUtils.getExplicitWait(driver, 15);
         this.js = (JavascriptExecutor) driver;
         PageFactory.initElements(driver, this);
     }
@@ -54,7 +51,7 @@ public class KoreksiAbsenPage {
 
     public boolean isBtnJamMasukDisplayed() {
         try {
-            return wait.until(ExpectedConditions.visibilityOf(btnJamMasuk)).isDisplayed();
+            return WaitUtils.waitForElementVisible(driver, btnJamMasuk, 15).isDisplayed();
         } catch (Exception e) {
             return false;
         }
@@ -66,16 +63,16 @@ public class KoreksiAbsenPage {
     }
 
     public void pilihTanggalHariIni() {
-        wait.until(ExpectedConditions.elementToBeClickable(daftarTanggal.get(0))).click();
+        WaitUtils.waitForElementClickable(driver, daftarTanggal.get(0), 15).click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@aria-label='Time']")));
+        WaitUtils.waitForElementVisible(driver, By.xpath("//input[@aria-label='Time']"), 15);
     }
 
     public void pilihJamDariPicker(String jam) {
         String label = jam + " hours";
         String xpath = "//span[@role='option' and @aria-label='" + label + "']";
 
-        WebElement targetJam = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
+        WebElement targetJam = WaitUtils.waitForElementVisible(driver, By.xpath(xpath), 15);
 
         new Actions(driver)
                 .moveToElement(targetJam, 0, 0)
@@ -99,10 +96,10 @@ public class KoreksiAbsenPage {
 }
 
     public void pilihTipeAbsen(String tipe) {
-        wait.until(ExpectedConditions.elementToBeClickable(dropdownTipeAbsen));
+        WaitUtils.waitForElementClickable(driver, dropdownTipeAbsen, 15);
         dropdownTipeAbsen.click();
         String optionXpath = "//li[contains(text(), '" + tipe.toUpperCase() + "')]";
-        WebElement option = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(optionXpath)));
+        WebElement option = WaitUtils.waitForElementClickable(driver, By.xpath(optionXpath), 15);
         option.click();
     }
 
@@ -113,7 +110,7 @@ public class KoreksiAbsenPage {
         } catch (InterruptedException e) {
         }
 
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[text()='27']"))).click();
+        WaitUtils.waitForElementClickable(driver, By.xpath("//button[text()='27']"), 15).click();
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -138,7 +135,7 @@ public class KoreksiAbsenPage {
         } catch (InterruptedException e) {
         }
 
-        wait.until(ExpectedConditions.visibilityOfAllElements(daftarTanggal));
+        WaitUtils.waitForAllElementsVisible(driver, daftarTanggal, 15);
         js.executeScript("arguments[0].click();", daftarTanggal.get(0));
         try {
             Thread.sleep(1000);
@@ -147,7 +144,7 @@ public class KoreksiAbsenPage {
         pilihJamDariPicker(jamKeluar);
 
         if (!tipe.isEmpty()) {
-            wait.until(ExpectedConditions.elementToBeClickable(dropdownTipeAbsen));
+            WaitUtils.waitForElementClickable(driver, dropdownTipeAbsen, 15);
             js.executeScript("arguments[0].click();", dropdownTipeAbsen);
             try {
                 Thread.sleep(1000);
@@ -167,11 +164,11 @@ public class KoreksiAbsenPage {
     public String getAlertSuccessMessage() {
         By alertLocator = By
                 .xpath("//div[contains(@class, 'success-message') or contains(text(), 'berhasil melakukan koreksi')]");
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(alertLocator)).getText();
+        return WaitUtils.waitForElementVisible(driver, alertLocator, 15).getText();
     }
 
     public String getErrorMessage(String expectedMessage) {
         String xpath = "//p[contains(text(), '" + expectedMessage + "')]";
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath))).getText();
+        return WaitUtils.waitForElementVisible(driver, By.xpath(xpath), 15).getText();
     }
 }

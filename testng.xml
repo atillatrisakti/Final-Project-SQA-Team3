@@ -1,0 +1,19 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Hadir App Automation Suite" verbose="1">
+    
+    <listeners>
+        <listener class-name="com.hadirapp.utlis.TestListener"/>
+    </listeners>
+
+    <test name="Authentication Tests">
+        <packages>
+            <package name="com.hadirapp.tests.auth"/>
+        </packages>
+    </test>
+    
+    <test name="Attendance Tests">
+        <packages>
+            <package name="com.hadirapp.tests.attendance"/>
+        </packages>
+    </test>
+</suite>
