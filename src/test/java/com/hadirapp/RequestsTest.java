@@ -279,6 +279,300 @@ public class RequestsTest {
         });
     }
 
+    @Test(priority = 9, description = "TC-LMB-09 - Verifikasi form pengajuan lembur tampil setelah klik Ajukan Lembur")
+    public void tcLmb09VerifyOvertimeFormDisplayed() {
+        runTestCase("TC-LMB-09", () -> {
+            // Precondition: user berhasil login dan belum melakukan absensi keluar.
+            // Tahap 1: masuk ke halaman absensi secara langsung agar test case berdiri sendiri.
+            loginToAbsentPage();
+
+            // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
+            absenPage.clickLemburButton();
+
+            // Tahap 3: klik tombol Ajukan Lembur untuk membuka form pengajuan.
+            lemburPage.clickAjukanLembur();
+
+            // Tahap 4: validasi akhir TC-LMB-09, form pengajuan lembur beserta field jam harus tampil.
+            boolean overtimeFormVisible = lemburPage.waitForOvertimeFormVisible();
+            validateTestCaseResult("TC-LMB-09", overtimeFormVisible,
+                    "TC-LMB-09 gagal: form pengajuan lembur tidak tampil setelah tombol Ajukan Lembur diklik.");
+        });
+    }
+
+    @Test(priority = 10, description = "TC-LMB-10 - Validasi field Catatan kurang dari 5 karakter")
+    public void tcLmb10SubmitOvertimeWithLessThanMinimumCatatan() {
+        runTestCase("TC-LMB-10", () -> {
+            // Precondition: user berhasil login dan belum melakukan absensi keluar.
+            // Tahap 1: masuk ke halaman absensi secara langsung agar test case berdiri sendiri.
+            loginToAbsentPage();
+
+            // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
+            absenPage.clickLemburButton();
+
+            // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar validasi field catatan bisa diuji.
+            lemburPage.clickAjukanLembur();
+
+            // Tahap 4: isi Jam Masuk dan Jam Keluar dengan data valid, lalu isi Catatan hanya 4 karakter.
+            LocalDate tanggalLembur = LocalDate.now();
+            LocalDateTime jamMasuk = tanggalLembur.atTime(18, 0);
+            LocalDateTime jamKeluar = tanggalLembur.atTime(20, 0);
+            lemburPage.fillOvertimeForm(
+                    jamMasuk,
+                    jamKeluar,
+                    "Test",
+                    "Catatan sengaja dibuat kurang dari 5 karakter.");
+
+            // Tahap 5: klik button Ajukan dan tunggu pesan validasi minimal karakter muncul di bawah field Catatan.
+            lemburPage.submitOvertime();
+            boolean catatanValidationVisible = lemburPage.waitForCatatanMinimumCharacterMessage();
+
+            // Tahap 6: validasi akhir TC-LMB-10, sistem harus menampilkan pesan bahwa Catatan minimal 5 karakter.
+            validateTestCaseResult("TC-LMB-10", catatanValidationVisible,
+                    "TC-LMB-10 gagal: pesan validasi 'Masukan minimal 5 karakter' tidak muncul.");
+        });
+    }
+
+    @Test(priority = 11, description = "TC-LMB-11 - Validasi submit lembur hanya mengisi Jam Masuk")
+    public void tcLmb11SubmitOvertimeWithOnlyJamMasuk() {
+        runTestCase("TC-LMB-11", () -> {
+            // Precondition: user berhasil login dan belum melakukan absensi keluar.
+            // Tahap 1: masuk ke halaman absensi secara langsung agar test case berdiri sendiri.
+            loginToAbsentPage();
+
+            // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
+            absenPage.clickLemburButton();
+
+            // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar validasi field kosong bisa diuji.
+            lemburPage.clickAjukanLembur();
+
+            // Tahap 4: isi hanya field Jam Masuk dengan format valid, sedangkan Jam Keluar dan Catatan dibiarkan kosong.
+            LocalDateTime jamMasuk = LocalDate.now().atTime(18, 0);
+            lemburPage.fillOnlyJamMasuk(jamMasuk);
+
+            // Tahap 5: klik button Ajukan dan tunggu pesan validasi pada field yang belum diisi.
+            lemburPage.submitOvertime();
+            boolean jamKeluarValidationVisible = lemburPage.waitForJamKeluarRequiredMessage();
+            boolean catatanValidationVisible = lemburPage.waitForCatatanMinimumCharacterMessage();
+
+            // Tahap 6: validasi akhir TC-LMB-11, sistem harus menampilkan validasi Jam Keluar dan Catatan.
+            boolean expectedValidationVisible = jamKeluarValidationVisible && catatanValidationVisible;
+            validateTestCaseResult("TC-LMB-11", expectedValidationVisible,
+                    "TC-LMB-11 gagal: validasi belum lengkap. Jam Keluar=" + jamKeluarValidationVisible
+                            + ", Catatan=" + catatanValidationVisible);
+        });
+    }
+
+    @Test(priority = 12, description = "TC-LMB-12 - Validasi submit lembur hanya mengisi Jam Keluar")
+    public void tcLmb12SubmitOvertimeWithOnlyJamKeluar() {
+        runTestCase("TC-LMB-12", () -> {
+            // Precondition: user berhasil login dan belum melakukan absensi keluar.
+            // Tahap 1: masuk ke halaman absensi secara langsung agar test case berdiri sendiri.
+            loginToAbsentPage();
+
+            // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
+            absenPage.clickLemburButton();
+
+            // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar validasi field kosong bisa diuji.
+            lemburPage.clickAjukanLembur();
+
+            // Tahap 4: isi hanya field Jam Keluar dengan format valid, sedangkan Jam Masuk dan Catatan dibiarkan kosong.
+            LocalDateTime jamKeluar = LocalDate.now().atTime(20, 0);
+            lemburPage.fillOnlyJamKeluar(jamKeluar);
+
+            // Tahap 5: klik button Ajukan dan tunggu pesan validasi pada field yang belum diisi.
+            lemburPage.submitOvertime();
+            boolean jamMasukValidationVisible = lemburPage.waitForJamMasukRequiredMessage();
+            boolean catatanValidationVisible = lemburPage.waitForCatatanMinimumCharacterMessage();
+
+            // Tahap 6: validasi akhir TC-LMB-12, sistem harus menampilkan validasi Jam Masuk dan Catatan.
+            boolean expectedValidationVisible = jamMasukValidationVisible && catatanValidationVisible;
+            validateTestCaseResult("TC-LMB-12", expectedValidationVisible,
+                    "TC-LMB-12 gagal: validasi belum lengkap. Jam Masuk=" + jamMasukValidationVisible
+                            + ", Catatan=" + catatanValidationVisible);
+        });
+    }
+
+    @Test(priority = 13, description = "TC-LMB-13 - Validasi submit lembur hanya mengisi Catatan")
+    public void tcLmb13SubmitOvertimeWithOnlyCatatan() {
+        runTestCase("TC-LMB-13", () -> {
+            // Precondition: user berhasil login dan belum melakukan absensi keluar.
+            // Tahap 1: masuk ke halaman absensi secara langsung agar test case berdiri sendiri.
+            loginToAbsentPage();
+
+            // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
+            absenPage.clickLemburButton();
+
+            // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar validasi field kosong bisa diuji.
+            lemburPage.clickAjukanLembur();
+
+            // Tahap 4: isi hanya field Catatan dengan minimal 5 karakter, sedangkan Jam Masuk dan Jam Keluar dibiarkan kosong.
+            lemburPage.fillOnlyCatatan("Validasi field jam lembur kosong.");
+
+            // Tahap 5: klik button Ajukan dan tunggu pesan validasi pada field jam yang belum diisi.
+            lemburPage.submitOvertime();
+            boolean jamMasukValidationVisible = lemburPage.waitForJamMasukRequiredMessage();
+            boolean jamKeluarValidationVisible = lemburPage.waitForJamKeluarRequiredMessage();
+
+            // Tahap 6: validasi akhir TC-LMB-13, sistem harus menampilkan validasi Jam Masuk dan Jam Keluar.
+            boolean expectedValidationVisible = jamMasukValidationVisible && jamKeluarValidationVisible;
+            validateTestCaseResult("TC-LMB-13", expectedValidationVisible,
+                    "TC-LMB-13 gagal: validasi belum lengkap. Jam Masuk=" + jamMasukValidationVisible
+                            + ", Jam Keluar=" + jamKeluarValidationVisible);
+        });
+    }
+
+    @Test(priority = 14, description = "TC-LMB-14 - Verifikasi tombol Reset mengosongkan field Jam Masuk")
+    public void tcLmb14ResetOvertimeFormAfterOnlyJamMasukFilled() {
+        runTestCase("TC-LMB-14", () -> {
+            // Precondition: user berhasil login dan belum melakukan absensi keluar.
+            // Tahap 1: masuk ke halaman absensi secara langsung agar test case berdiri sendiri.
+            loginToAbsentPage();
+
+            // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
+            absenPage.clickLemburButton();
+
+            // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar form siap diisi.
+            lemburPage.clickAjukanLembur();
+
+            // Tahap 4: isi hanya field Jam Masuk dengan format valid.
+            lemburPage.fillOnlyJamMasuk(LocalDate.now().atTime(18, 0));
+
+            // Tahap 5: klik tombol Reset untuk mengosongkan field yang sudah terisi.
+            lemburPage.clickReset();
+
+            // Tahap 6: validasi akhir TC-LMB-14, semua field harus kembali kosong setelah tombol Reset ditekan.
+            boolean allFieldsEmptyAfterReset = lemburPage.waitForFormFieldsEmpty();
+            validateTestCaseResult("TC-LMB-14", allFieldsEmptyAfterReset,
+                    "TC-LMB-14 gagal: masih ada field yang terisi setelah tombol Reset diklik. "
+                            + lemburPage.getFormFieldValuesSummary());
+        });
+    }
+
+    @Test(priority = 15, description = "TC-LMB-15 - Verifikasi tombol Reset mengosongkan field Jam Keluar")
+    public void tcLmb15ResetOvertimeFormAfterOnlyJamKeluarFilled() {
+        runTestCase("TC-LMB-15", () -> {
+            // Precondition: user berhasil login dan belum melakukan absensi keluar.
+            // Tahap 1: masuk ke halaman absensi secara langsung agar test case berdiri sendiri.
+            loginToAbsentPage();
+
+            // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
+            absenPage.clickLemburButton();
+
+            // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar form siap diisi.
+            lemburPage.clickAjukanLembur();
+
+            // Tahap 4: isi hanya field Jam Keluar dengan format valid.
+            lemburPage.fillOnlyJamKeluar(LocalDate.now().atTime(20, 0));
+
+            // Tahap 5: klik tombol Reset untuk mengosongkan field yang sudah terisi.
+            lemburPage.clickReset();
+
+            // Tahap 6: validasi akhir TC-LMB-15, semua field harus kembali kosong setelah tombol Reset ditekan.
+            boolean allFieldsEmptyAfterReset = lemburPage.waitForFormFieldsEmpty();
+            validateTestCaseResult("TC-LMB-15", allFieldsEmptyAfterReset,
+                    "TC-LMB-15 gagal: masih ada field yang terisi setelah tombol Reset diklik. "
+                            + lemburPage.getFormFieldValuesSummary());
+        });
+    }
+
+    @Test(priority = 16, description = "TC-LMB-16 - Verifikasi tombol Reset mengosongkan field Catatan")
+    public void tcLmb16ResetOvertimeFormAfterOnlyCatatanFilled() {
+        runTestCase("TC-LMB-16", () -> {
+            // Precondition: user berhasil login dan belum melakukan absensi keluar.
+            // Tahap 1: masuk ke halaman absensi secara langsung agar test case berdiri sendiri.
+            loginToAbsentPage();
+
+            // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
+            absenPage.clickLemburButton();
+
+            // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar form siap diisi.
+            lemburPage.clickAjukanLembur();
+
+            // Tahap 4: isi hanya field Catatan dengan minimal 5 karakter.
+            lemburPage.fillOnlyCatatan("Catatan ini akan dibersihkan melalui tombol reset.");
+
+            // Tahap 5: klik tombol Reset untuk mengosongkan field yang sudah terisi.
+            lemburPage.clickReset();
+
+            // Tahap 6: validasi akhir TC-LMB-16, semua field harus kembali kosong setelah tombol Reset ditekan.
+            boolean allFieldsEmptyAfterReset = lemburPage.waitForFormFieldsEmpty();
+            validateTestCaseResult("TC-LMB-16", allFieldsEmptyAfterReset,
+                    "TC-LMB-16 gagal: masih ada field yang terisi setelah tombol Reset diklik. "
+                            + lemburPage.getFormFieldValuesSummary());
+        });
+    }
+
+    @Test(priority = 17, description = "TC-LMB-17 - Verifikasi pengisian form lembur valid selama 1 jam")
+    public void tcLmb17FillOneHourOvertimeBeforeClockOut() {
+        runTestCase("TC-LMB-17", () -> {
+            // Precondition: user berhasil login dan belum melakukan absensi keluar.
+            // Tahap 1: masuk ke halaman absensi secara langsung agar test case berdiri sendiri.
+            loginToAbsentPage();
+
+            // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
+            absenPage.clickLemburButton();
+
+            // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar form siap diisi.
+            lemburPage.clickAjukanLembur();
+
+            // Tahap 4: isi semua field dengan data valid selama 1 jam pada hari yang sama.
+            LocalDate tanggalLembur = LocalDate.now();
+            LocalDateTime jamMasuk = tanggalLembur.atTime(19, 0);
+            LocalDateTime jamKeluar = tanggalLembur.atTime(20, 0);
+            lemburPage.fillOvertimeForm(
+                    jamMasuk,
+                    jamKeluar,
+                    "Pengajuan lembur selama satu jam sebelum absen keluar.",
+                    "Data valid dengan durasi lembur satu jam.");
+
+            // Tahap 5: ambil ringkasan value form untuk memastikan data yang diinput tetap tersimpan pada field.
+            String formFieldValues = lemburPage.getFormFieldValuesSummary();
+            boolean oneHourOvertimeDataFilled = formFieldValues.contains("19:00")
+                    && formFieldValues.contains("20:00")
+                    && formFieldValues.contains("Pengajuan lembur selama satu jam sebelum absen keluar.");
+
+            // Tahap 6: validasi akhir TC-LMB-17, seluruh data lembur valid selama 1 jam harus tampil pada form.
+            validateTestCaseResult("TC-LMB-17", oneHourOvertimeDataFilled,
+                    "TC-LMB-17 gagal: data lembur valid selama 1 jam tidak tersimpan pada form. " + formFieldValues);
+        });
+    }
+
+    @Test(priority = 18, description = "TC-LMB-18 - Verifikasi pengisian form lembur valid mendekati batas akhir hari")
+    public void tcLmb18FillOvertimeNearEndOfDayBeforeClockOut() {
+        runTestCase("TC-LMB-18", () -> {
+            // Precondition: user berhasil login dan belum melakukan absensi keluar.
+            // Tahap 1: masuk ke halaman absensi secara langsung agar test case berdiri sendiri.
+            loginToAbsentPage();
+
+            // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
+            absenPage.clickLemburButton();
+
+            // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar form siap diisi.
+            lemburPage.clickAjukanLembur();
+
+            // Tahap 4: isi semua field dengan data valid mendekati akhir hari dan tetap tidak melewati 24:00.
+            LocalDate tanggalLembur = LocalDate.now();
+            LocalDateTime jamMasuk = tanggalLembur.atTime(22, 0);
+            LocalDateTime jamKeluar = tanggalLembur.atTime(23, 59);
+            lemburPage.fillOvertimeForm(
+                    jamMasuk,
+                    jamKeluar,
+                    "Pengajuan lembur mendekati batas akhir hari.",
+                    "Data valid dengan jam keluar sebelum pergantian hari.");
+
+            // Tahap 5: ambil ringkasan value form untuk memastikan data yang diinput tetap tersimpan pada field.
+            String formFieldValues = lemburPage.getFormFieldValuesSummary();
+            boolean nearEndOfDayOvertimeDataFilled = formFieldValues.contains("22:00")
+                    && formFieldValues.contains("23:59")
+                    && formFieldValues.contains("Pengajuan lembur mendekati batas akhir hari.");
+
+            // Tahap 6: validasi akhir TC-LMB-18, seluruh data lembur valid mendekati akhir hari harus tampil pada form.
+            validateTestCaseResult("TC-LMB-18", nearEndOfDayOvertimeDataFilled,
+                    "TC-LMB-18 gagal: data lembur valid mendekati akhir hari tidak tersimpan pada form. "
+                            + formFieldValues);
+        });
+    }
+
     @AfterMethod(alwaysRun = true)
     public void tearDown() {
         if (driver != null) {

@@ -79,6 +79,28 @@ public class LemburPage {
         fillJamMasuk(jamMasuk);
         fillJamKeluar(jamKeluar);
     }
+
+    public void fillOnlyJamMasuk(LocalDateTime jamMasuk) {
+        fillJamMasuk(jamMasuk);
+    }
+
+    public void fillOnlyJamKeluar(LocalDateTime jamKeluar) {
+        fillJamKeluar(jamKeluar);
+    }
+
+    public void fillOnlyCatatan(String catatan) {
+        fillCatatan(catatan);
+    }
+
+    public boolean waitForOvertimeFormVisible() {
+        try {
+            return wait.until(ExpectedConditions.visibilityOfElementLocated(LEMBUR_FORM)) != null
+                    && wait.until(ExpectedConditions.visibilityOfElementLocated(JAM_MASUK_INPUT)) != null
+                    && wait.until(ExpectedConditions.visibilityOfElementLocated(JAM_KELUAR_INPUT)) != null;
+        } catch (Exception e) {
+            return false;
+        }
+    }
     
     private void fillJamMasuk(LocalDateTime jamMasuk) {
         WebElement jamMasukField = wait.until(ExpectedConditions.visibilityOfElementLocated(JAM_MASUK_INPUT));
