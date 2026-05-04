@@ -16,4 +16,10 @@
             <package name="com.hadirapp.tests.attendance"/>
         </packages>
     </test>
+
+    <test name="Requests Tests">
+        <packages>
+            <package name="com.hadirapp.tests.requests"/>
+        </packages>
+    </test>
 </suite>

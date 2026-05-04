@@ -1,6 +1,7 @@
 package com.hadirapp.utlis;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import java.time.LocalDate;
 
 public class Constants {
 
@@ -21,5 +22,9 @@ public class Constants {
     public static final String REGISTER_URL = dotenv.get("REGISTER_URL");
     public static final String RESET_PASS_URL = dotenv.get("RESET_PASS_URL");
     public static final long TIMEOUT = 10;
+
+    public static String getTodayDate() {
+        return String.valueOf(LocalDate.now().getDayOfMonth());
+    }
 
 }

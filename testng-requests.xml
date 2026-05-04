@@ -1,0 +1,14 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Requests Suite" verbose="1">
+
+    <listeners>
+        <listener class-name="com.hadirapp.utlis.TestListener"/>
+    </listeners>
+
+    <test name="Requests Tests">
+        <packages>
+            <package name="com.hadirapp.tests.requests"/>
+        </packages>
+    </test>
+
+</suite>

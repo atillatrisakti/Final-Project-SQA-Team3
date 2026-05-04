@@ -1,9 +1,9 @@
 package com.hadirapp.pages.Attendance;
 
+import com.hadirapp.utlis.WaitUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import com.hadirapp.utlis.WaitUtils;
 
 public class AbsenKeluarPage {
     private WebDriver driver;
@@ -50,6 +50,7 @@ public class AbsenKeluarPage {
         }
         klikAbsenPulang();
     }
+
     public void logout() {
         WaitUtils.waitForElementClickable(driver, btnMenu, 20).click();
         WaitUtils.waitForElementClickable(driver, btnLogout, 20).click();

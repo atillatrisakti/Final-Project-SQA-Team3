@@ -1,9 +1,9 @@
 package com.hadirapp.pages.Attendance;
 
+import com.hadirapp.utlis.WaitUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import com.hadirapp.utlis.WaitUtils;
 
 public class HistoryPage {
     private WebDriver driver;
