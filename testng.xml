@@ -6,20 +6,32 @@
     </listeners>
 
     <test name="Authentication Tests">
-        <packages>
-            <package name="com.hadirapp.tests.auth"/>
-        </packages>
+        <classes>
+            <class name="com.hadirapp.tests.auth.RegisterTest" />
+            <class name="com.hadirapp.tests.auth.LoginTest" />
+            <class name="com.hadirapp.tests.auth.LogoutTest" />
+            <class name="com.hadirapp.tests.auth.ResetPasswordTest" />
+        </classes>
     </test>
     
     <test name="Attendance Tests">
-        <packages>
-            <package name="com.hadirapp.tests.attendance"/>
-        </packages>
+        <classes>
+            <class name="com.hadirapp.tests.attendance.AbsenMasukTest" />
+            <class name="com.hadirapp.tests.attendance.AbsenMasukBlockCameraTest" />
+            <class name="com.hadirapp.tests.attendance.AbsenKeluarTest" />
+            <class name="com.hadirapp.tests.attendance.HistoryTest" />
+            <class name="com.hadirapp.tests.attendance.KoreksiAbsenTest" />
+        </classes>
     </test>
 
     <test name="Requests Tests">
-        <packages>
-            <package name="com.hadirapp.tests.requests"/>
-        </packages>
+        <classes>
+            <class name="com.hadirapp.tests.requests.CutiTest" />
+            <class name="com.hadirapp.tests.requests.IzinOffTest" />
+            <class name="com.hadirapp.tests.requests.IzinPulangCepatTest" />
+            <class name="com.hadirapp.tests.requests.IzinTerlambatTest" />
+            <class name="com.hadirapp.tests.requests.LemburTest" />
+            <class name="com.hadirapp.tests.requests.SakitTest" />
+        </classes>
     </test>
 </suite>
