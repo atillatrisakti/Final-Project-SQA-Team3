@@ -13,6 +13,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.hadirapp.utlis.WaitUtils;
+
 
 public class CutiPage {
     private WebDriver driver;
@@ -26,11 +28,20 @@ public class CutiPage {
         this.js = (JavascriptExecutor) driver;
     }
 
-    @FindBy(xpath = "//img[@alt='Cuti']")
+    @FindBy(xpath = "//a[@class='user__menu__item']//p[text()='Cuti']")
     private WebElement cutiBtn;
 
     @FindBy(xpath = "//button[text()='Ajukan Cuti']")
     private WebElement ajukanCutiBtn;
+
+    @FindBy(xpath = "//p[text()='Ajukan Cuti']")
+    private WebElement titleModalAjukanCuti;
+
+    @FindBy(xpath = "//button[text()='Info Cuti']")
+    private WebElement tabInfoCuti;
+
+    @FindBy(xpath = "//span[text()='Total Cuti']")
+    private WebElement labelTotalCuti;
 
     @FindBy(xpath = "//div[@id='leave_type_id']")
     private WebElement jenisCutiDropdown;
@@ -47,14 +58,67 @@ public class CutiPage {
     @FindBy(xpath = "//button[text()='Ajukan']")
     private WebElement ajukanButton;
 
-    
-    
+    @FindBy(xpath = "//div[contains(@class, 'MuiSnackbarContent-message')]")
+    private WebElement snackbarErrorMsg;
+
+    @FindBy(xpath = "//button[text()='Reset']")
+    private WebElement resetBtn;
+
+    @FindBy(id = "leave_type_id")
+    private WebElement dropdownTipeCuti;
+
+    @FindBy(xpath = "//label[text()='Pilih Tanggal']/following-sibling::div//p")
+    private WebElement displayTanggal;
+
+
+    public void clickResetButton() {
+        WaitUtils.waitForElementClickable(driver, resetBtn, 10);
+        resetBtn.click();
+    }
+
     public void clickCutiBtn() {
-        cutiBtn.click();
+        WaitUtils.waitForElementClickable(driver, cutiBtn, 10);
+        try {
+            cutiBtn.click();
+        } catch (Exception e) {
+            js.executeScript("arguments[0].click();", cutiBtn);
+        }
     }
 
     public void clickAjukanCutiBtn() {
+        WaitUtils.waitForElementClickable(driver, ajukanCutiBtn, 10);
         ajukanCutiBtn.click();
+    }
+
+    public boolean isModalAjukanCutiDisplayed() {
+        try {
+            WaitUtils.waitForElementVisible(driver, jenisCutiDropdown, 5);
+            return jenisCutiDropdown.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public String getModalTitleText() {
+        return titleModalAjukanCuti.getText();
+    }
+
+    public void clickTabInfoCuti() {
+        WaitUtils.waitForElementClickable(driver, tabInfoCuti, 5);
+        tabInfoCuti.click();
+    }
+
+    public boolean isLabelTotalCutiDisplayed() {
+        try {
+            WaitUtils.waitForElementVisible(driver, labelTotalCuti, 5);
+            return labelTotalCuti.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public String getLabelTotalCutiText() {
+        return labelTotalCuti.getText();
     }
 
     public void pilihTipeCuti(String tipeCuti) {
@@ -107,15 +171,15 @@ public class CutiPage {
         clickAjukanCutiBtn();
     }
 
-    // Cek apakah halaman list cuti tampil setelah submit
+    // Cek apakah halaman list cuti tampil berdasarkan judul "Halaman Cuti"
     public boolean isHalamanCutiDisplayed() {
         try {
-            WebElement card = wait.until(
+            WebElement title = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(
-                    By.xpath("(//div[contains(@class, 'MuiCard-root')])[1]")
+                    By.xpath("//p[contains(@class, 'MuiTypography-root') and contains(normalize-space(.), 'Halaman Cuti')]")
                 )
             );
-            return card.isDisplayed();
+            return title.isDisplayed();
         } catch (Exception e) {
             return false;
         }
@@ -135,6 +199,36 @@ public class CutiPage {
             System.out.println("Card cuti terbaru tidak ditemukan: " + e.getMessage());
             return "";
         }
+    }
+
+    public String getErrorMessageText() {
+        try {
+            WaitUtils.waitForElementVisible(driver, snackbarErrorMsg, 5);
+            return snackbarErrorMsg.getText();
+        } catch (Exception e) {
+            return "Error message tidak muncul";
+        }
+    }
+
+    public boolean isErrorMessageDisplayed() {
+        try {
+            WaitUtils.waitForElementVisible(driver, snackbarErrorMsg, 10);
+            return snackbarErrorMsg.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public String getTipeCutiValue() {
+    return dropdownTipeCuti.getText();
+    }
+
+    public String getTanggalValue() {
+        return displayTanggal.getText().trim(); 
+    }
+
+    public String getCatatanValue() {
+        return notesInput.getAttribute("value");
     }
 
 }
