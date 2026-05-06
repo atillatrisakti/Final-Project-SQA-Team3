@@ -17,6 +17,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class LemburPage {
     private WebDriver driver;
     private WebDriverWait wait;
+    private JavascriptExecutor js;
     
     private static final By AJUKAN_LEMBUR_BTN = By.xpath("//button[contains(text(), 'Ajukan Lembur')]");
     private static final By JAM_MASUK_INPUT = By.xpath("//input[@placeholder='dd mm yyyy, hh:mm']");
@@ -45,11 +46,17 @@ public class LemburPage {
     public LemburPage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.js = (JavascriptExecutor) driver;
     }
     
     public void clickAjukanLembur() {
         WebElement button = wait.until(ExpectedConditions.elementToBeClickable(AJUKAN_LEMBUR_BTN));
-        button.click();
+        try {
+            button.click();
+        } catch (Exception e) {
+            js.executeScript("arguments[0].click();", button);
+        }
+        
         // Wait for form to appear - wait for the first input field to be visible
         wait.until(ExpectedConditions.visibilityOfElementLocated(JAM_MASUK_INPUT));
         try {

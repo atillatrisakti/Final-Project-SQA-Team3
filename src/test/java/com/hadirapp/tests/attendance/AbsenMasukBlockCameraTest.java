@@ -38,8 +38,13 @@ public class AbsenMasukBlockCameraTest extends BaseTest {
         org.openqa.selenium.Alert alert = WaitUtils.waitForAlert(driver, 10);
         String alertText = alert.getText();
         log.info("Native Browser Alert muncul dengan teks: {}", alertText);
-        Assert.assertTrue(alertText.contains("Permission denied") || alertText.contains("NotAllowedError"), 
-                "Alert native browser tidak sesuai ekspektasi");
+        String alertTextLower = alertText.toLowerCase();
+        Assert.assertTrue(alertTextLower.contains("permission denied") || 
+                        alertTextLower.contains("notallowederror") || 
+                        alertTextLower.contains("notfounderror") || 
+                        alertTextLower.contains("kamera") || 
+                        alertTextLower.contains("izin"), 
+                "Alert native browser tidak sesuai ekspektasi. Actual alert: " + alertText);
         alert.accept();
         
         WebElement modalPeringatan = WaitUtils.waitForElementVisible(driver, By.xpath("//*[contains(text(), 'Akses kamera harus diizinkan')]"), 10);

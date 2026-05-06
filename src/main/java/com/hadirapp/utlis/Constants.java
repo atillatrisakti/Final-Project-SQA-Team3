@@ -2,6 +2,7 @@ package com.hadirapp.utlis;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import java.time.LocalDate;
+import java.io.File;
 
 public class Constants {
 
@@ -25,6 +26,11 @@ public class Constants {
 
     public static String getTodayDate() {
         return String.valueOf(LocalDate.now().getDayOfMonth());
+    }
+
+    public static String getTestDataPath(String fileName) {
+        String projectPath = System.getProperty("user.dir");
+        return projectPath + File.separator + "src" + File.separator + "test" + File.separator + "resources" + File.separator + "testdata" + File.separator + fileName;
     }
 
 }

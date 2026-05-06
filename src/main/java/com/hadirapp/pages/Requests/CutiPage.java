@@ -73,7 +73,11 @@ public class CutiPage {
 
     public void clickResetButton() {
         WaitUtils.waitForElementClickable(driver, resetBtn, 10);
-        resetBtn.click();
+        try {
+            resetBtn.click();
+        } catch (Exception e) {
+            js.executeScript("arguments[0].click();", resetBtn);
+        }
     }
 
     public void clickCutiBtn() {
@@ -87,7 +91,11 @@ public class CutiPage {
 
     public void clickAjukanCutiBtn() {
         WaitUtils.waitForElementClickable(driver, ajukanCutiBtn, 10);
-        ajukanCutiBtn.click();
+        try {
+            ajukanCutiBtn.click();
+        } catch (Exception e) {
+            js.executeScript("arguments[0].click();", ajukanCutiBtn);
+        }
     }
 
     public boolean isModalAjukanCutiDisplayed() {
@@ -106,7 +114,11 @@ public class CutiPage {
 
     public void clickTabInfoCuti() {
         WaitUtils.waitForElementClickable(driver, tabInfoCuti, 10);
-        tabInfoCuti.click();
+        try {
+            tabInfoCuti.click();
+        } catch (Exception e) {
+            js.executeScript("arguments[0].click();", tabInfoCuti);
+        }
     }
 
     public boolean isLabelTotalCutiDisplayed() {

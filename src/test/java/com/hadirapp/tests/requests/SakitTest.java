@@ -37,8 +37,7 @@ public class SakitTest extends BaseTest {
         log.info("TC-SKT-02 - Ajukan sakit dengan data valid");
         sakitPage.klikTombolAjukanSakit();
         sakitPage.pilihRentangTanggal("11", "12");
-        String projectPath = System.getProperty("user.dir");
-        String imagePath = projectPath + "\\src\\test\\resources\\testdata\\surat_sakit.png";
+        String imagePath = Constants.getTestDataPath("surat_sakit.png");
         sakitPage.uploadDokumen(imagePath);
         sakitPage.klikTombolSubmit();
         WaitUtils.waitForUrlContains(driver, "sick", 20);
@@ -61,8 +60,7 @@ public class SakitTest extends BaseTest {
     public void testSakitTanggalKosong() {
         log.info("TC-SKT-04 - Pengajuan sakit dengan tanggal kosong");
         sakitPage.klikTombolAjukanSakit();
-        String projectPath = System.getProperty("user.dir");
-        String imagePath = projectPath + "\\src\\test\\resources\\testdata\\surat_sakit.png";
+        String imagePath = Constants.getTestDataPath("surat_sakit.png");
         sakitPage.uploadDokumen(imagePath);
         sakitPage.klikTombolSubmit();
         Assert.assertTrue(sakitPage.isErrorMessageDisplayed(), "Error message tidak tampil!");
@@ -87,8 +85,7 @@ public class SakitTest extends BaseTest {
         log.info("TC-SKT-06 - Error saat input tanggal yang sudah pernah diajukan");
         sakitPage.klikTombolAjukanSakit();
         sakitPage.pilihRentangTanggal("6", "8");
-        String projectPath = System.getProperty("user.dir");
-        String imagePath = projectPath + "\\src\\test\\resources\\testdata\\surat_sakit.png";
+        String imagePath = Constants.getTestDataPath("surat_sakit.png");
         sakitPage.uploadDokumen(imagePath);
         sakitPage.klikTombolSubmit();
         Assert.assertTrue(sakitPage.isErrorMessageDisplayed(), "Error message tidak tampil!");
@@ -102,8 +99,7 @@ public class SakitTest extends BaseTest {
         log.info("TC-SKT-07 - Memastikan tombol Reset mengosongkan form");
         sakitPage.klikTombolAjukanSakit();
         sakitPage.pilihRentangTanggal("10", "12");
-        String projectPath = System.getProperty("user.dir");
-        String imagePath = projectPath + "\\src\\test\\resources\\testdata\\surat_sakit.png";
+        String imagePath = Constants.getTestDataPath("surat_sakit.png");
         sakitPage.uploadDokumen(imagePath);
         sakitPage.klikReset();
         String valueTanggal = sakitPage.getTeksTanggal();

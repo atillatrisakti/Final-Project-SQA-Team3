@@ -74,8 +74,12 @@ public class IzinPage {
 
     // Method untuk klik menu Izin
     public void klikMenuIzin() {
-        WaitUtils.waitForElementClickable(driver, iconIzin, 10);
-        iconIzin.click();
+        WaitUtils.waitForElementClickable(driver, iconIzin, 20);
+        try {
+            iconIzin.click();
+        } catch (Exception e) {
+            js.executeScript("arguments[0].click();", iconIzin);
+        }
     }
 
     // Method untuk memilih tab berdasarkan nama
@@ -86,8 +90,12 @@ public class IzinPage {
         else if (tabName.equals("Izin Off")) tab = tabIzinOff;
     
         scrollToElement(tab);
-        WaitUtils.waitForElementClickable(driver, tab, 10);
-        tab.click();
+        WaitUtils.waitForElementClickable(driver, tab, 15);
+        try {
+            tab.click();
+        } catch (Exception e) {
+            js.executeScript("arguments[0].click();", tab);
+        }
     }
 
     // Method untuk klik tombol Tanggal (kalender)
@@ -111,8 +119,12 @@ public class IzinPage {
     public void isiFormTerlambat(String tanggal, String jam, String notes) {
         WaitUtils.waitForElementClickable(driver, tabTerlambat, 10);
         tabTerlambat.click();
-        WaitUtils.waitForElementClickable(driver, btnAjukanTerlambat, 10);
-        btnAjukanTerlambat.click();
+        WaitUtils.waitForElementClickable(driver, btnAjukanTerlambat, 15);
+        try {
+            btnAjukanTerlambat.click();
+        } catch (Exception e) {
+            js.executeScript("arguments[0].click();", btnAjukanTerlambat);
+        }
 
         if (!tanggal.isEmpty()) {
             WebElement iconKalender = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@aria-label='Choose date']")));
@@ -150,8 +162,12 @@ public class IzinPage {
     public void isiFormPulangCepat(String tanggal, String jam, String notes) {
         WaitUtils.waitForElementClickable(driver, tabPulangCepat, 10);
         tabPulangCepat.click();
-        WaitUtils.waitForElementClickable(driver, btnAjukanPulangCepat, 10);
-        btnAjukanPulangCepat.click();
+        WaitUtils.waitForElementClickable(driver, btnAjukanPulangCepat, 15);
+        try {
+            btnAjukanPulangCepat.click();
+        } catch (Exception e) {
+            js.executeScript("arguments[0].click();", btnAjukanPulangCepat);
+        }
 
         if (!tanggal.isEmpty()) {
             WebElement iconKalender = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@aria-label='Choose date']")));
@@ -189,8 +205,12 @@ public class IzinPage {
     public void isiFormIzinOff(String tanggal, String reason) {
         WaitUtils.waitForElementClickable(driver, tabIzinOff, 10);
         tabIzinOff.click();
-        WaitUtils.waitForElementClickable(driver, btnAjukanIzinOff, 10);
-        btnAjukanIzinOff.click();
+        WaitUtils.waitForElementClickable(driver, btnAjukanIzinOff, 15);
+        try {
+            btnAjukanIzinOff.click();
+        } catch (Exception e) {
+            js.executeScript("arguments[0].click();", btnAjukanIzinOff);
+        }
         if (!tanggal.isEmpty()) {
             WebElement iconKalender = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@aria-label='Choose date']")));
             js.executeScript("arguments[0].click();", iconKalender);
