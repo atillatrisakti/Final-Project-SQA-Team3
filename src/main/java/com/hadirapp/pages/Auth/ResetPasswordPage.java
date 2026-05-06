@@ -6,6 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.hadirapp.utlis.Constants;
 import com.hadirapp.utlis.WaitUtils;
 
 public class ResetPasswordPage {
@@ -46,16 +47,19 @@ public class ResetPasswordPage {
     private WebElement alertMessage;
 
     public void clickForgotPasswordButton() {
+        WaitUtils.waitForElementClickable(driver, forgotPasswordButton, 10);
         forgotPasswordButton.click();
     }
 
     public void clickBackToLoginButton() {
+        WaitUtils.waitForElementClickable(driver, backToLoginButton, 10);
         backToLoginButton.click();
     }
 
     public void requestResetPassword(String email) {
         emailField.clear();
         emailField.sendKeys(email);
+        WaitUtils.waitForElementClickable(driver, submitRequestButton, 10);
         submitRequestButton.click();
     }
 
@@ -69,6 +73,7 @@ public class ResetPasswordPage {
         otpField.clear();
         otpField.sendKeys(otp);
         
+        WaitUtils.waitForElementClickable(driver, submitNewPasswordButton, 10);
         submitNewPasswordButton.click();
     }
 
@@ -82,6 +87,7 @@ public class ResetPasswordPage {
     }
 
     public String getAlertMessage() {
+        WaitUtils.waitForElementVisible(driver, alertMessage, 10);
         return alertMessage.getText();
     }
 

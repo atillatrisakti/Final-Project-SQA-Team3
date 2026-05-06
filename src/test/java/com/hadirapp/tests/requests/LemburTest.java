@@ -37,6 +37,7 @@ public class LemburTest extends BaseTest{
 
             // Tahap 4: klik tombol Lembur dan tunggu marker "Ajukan Lembur" muncul sebagai bukti aksi berhasil diproses.
             absenPage.clickLemburButton();
+            WaitUtils.waitForUrlContains(driver, "overtime-client", 20);
 
             // Tahap 5: validasi akhir TC-LMB-01, tombol atau marker pengajuan lembur harus terlihat.
             boolean ajukanLemburVisible = absenPage.isAjukanLemburVisible();
@@ -54,6 +55,7 @@ public class LemburTest extends BaseTest{
 
             // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
             absenPage.clickLemburButton();
+            WaitUtils.waitForUrlContains(driver, "overtime-client", 20);
 
             // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar input tidak dieksekusi terlalu cepat.
             lemburPage.clickAjukanLembur();
@@ -88,6 +90,7 @@ public class LemburTest extends BaseTest{
 
             // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
             absenPage.clickLemburButton();
+            WaitUtils.waitForUrlContains(driver, "overtime-client", 20);
 
             // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar validasi field wajib bisa diuji.
             lemburPage.clickAjukanLembur();
@@ -118,6 +121,7 @@ public class LemburTest extends BaseTest{
 
             // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
             absenPage.clickLemburButton();
+            WaitUtils.waitForUrlContains(driver, "overtime-client", 20);
 
             // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar validasi field wajib bisa diuji.
             lemburPage.clickAjukanLembur();
@@ -148,6 +152,7 @@ public class LemburTest extends BaseTest{
 
             // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
             absenPage.clickLemburButton();
+            WaitUtils.waitForUrlContains(driver, "overtime-client", 20);
 
             // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar validasi field catatan bisa diuji.
             lemburPage.clickAjukanLembur();
@@ -178,6 +183,7 @@ public class LemburTest extends BaseTest{
 
             // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
             absenPage.clickLemburButton();
+            WaitUtils.waitForUrlContains(driver, "overtime-client", 20);
 
             // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar validasi seluruh field wajib bisa diuji.
             lemburPage.clickAjukanLembur();
@@ -212,6 +218,7 @@ public class LemburTest extends BaseTest{
 
             // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
             absenPage.clickLemburButton();
+            WaitUtils.waitForUrlContains(driver, "overtime-client", 20);
 
             // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar form siap diisi.
             lemburPage.clickAjukanLembur();
@@ -247,6 +254,7 @@ public class LemburTest extends BaseTest{
 
             // Tahap 1: klik tombol Lembur.
             absenPage.clickLemburButton();
+            WaitUtils.waitForUrlContains(driver, "overtime-client", 20);
 
             // Tahap 2: klik tombol Ajukan Lembur.
             lemburPage.clickAjukanLembur();
@@ -280,6 +288,7 @@ public class LemburTest extends BaseTest{
 
             // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
             absenPage.clickLemburButton();
+            WaitUtils.waitForUrlContains(driver, "overtime-client", 20);
 
             // Tahap 3: klik tombol Ajukan Lembur untuk membuka form pengajuan.
             lemburPage.clickAjukanLembur();
@@ -300,6 +309,7 @@ public class LemburTest extends BaseTest{
 
             // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
             absenPage.clickLemburButton();
+            WaitUtils.waitForUrlContains(driver, "overtime-client", 20);
 
             // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar validasi field catatan bisa diuji.
             lemburPage.clickAjukanLembur();
@@ -333,6 +343,7 @@ public class LemburTest extends BaseTest{
 
             // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
             absenPage.clickLemburButton();
+            WaitUtils.waitForUrlContains(driver, "overtime-client", 20);
 
             // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar validasi field kosong bisa diuji.
             lemburPage.clickAjukanLembur();
@@ -363,6 +374,7 @@ public class LemburTest extends BaseTest{
 
             // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
             absenPage.clickLemburButton();
+            WaitUtils.waitForUrlContains(driver, "overtime-client", 20);
 
             // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar validasi field kosong bisa diuji.
             lemburPage.clickAjukanLembur();
@@ -393,6 +405,7 @@ public class LemburTest extends BaseTest{
 
             // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
             absenPage.clickLemburButton();
+            WaitUtils.waitForUrlContains(driver, "overtime-client", 20);
 
             // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar validasi field kosong bisa diuji.
             lemburPage.clickAjukanLembur();
@@ -422,6 +435,7 @@ public class LemburTest extends BaseTest{
 
             // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
             absenPage.clickLemburButton();
+            WaitUtils.waitForUrlContains(driver, "overtime-client", 20);
 
             // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar form siap diisi.
             lemburPage.clickAjukanLembur();
@@ -449,6 +463,7 @@ public class LemburTest extends BaseTest{
 
             // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
             absenPage.clickLemburButton();
+            WaitUtils.waitForUrlContains(driver, "overtime-client", 20);
 
             // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar form siap diisi.
             lemburPage.clickAjukanLembur();
@@ -476,6 +491,7 @@ public class LemburTest extends BaseTest{
 
             // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
             absenPage.clickLemburButton();
+            WaitUtils.waitForUrlContains(driver, "overtime-client", 20);
 
             // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar form siap diisi.
             lemburPage.clickAjukanLembur();
@@ -503,6 +519,7 @@ public class LemburTest extends BaseTest{
 
             // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
             absenPage.clickLemburButton();
+            WaitUtils.waitForUrlContains(driver, "overtime-client", 20);
 
             // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar form siap diisi.
             lemburPage.clickAjukanLembur();
@@ -538,6 +555,7 @@ public class LemburTest extends BaseTest{
 
             // Tahap 2: klik tombol Lembur lalu tunggu area pengajuan lembur siap digunakan.
             absenPage.clickLemburButton();
+            WaitUtils.waitForUrlContains(driver, "overtime-client", 20);
 
             // Tahap 3: klik tombol Ajukan Lembur dan tunggu field form tampil agar form siap diisi.
             lemburPage.clickAjukanLembur();
@@ -568,13 +586,13 @@ public class LemburTest extends BaseTest{
 
     private void loginToAbsentModuleByMenu() {
         loginPage.doLogin(Constants.EMAIL, Constants.PASSWORD);
-        WaitUtils.waitForUrlToBe(driver, Constants.DASHBOARD_URL, 10);
+        WaitUtils.waitForUrlToBe(driver, Constants.DASHBOARD_URL, 20);
         absenPage.openAbsentModule();
     }
 
     private void loginToAbsentPage() {
         loginPage.doLogin(Constants.EMAIL, Constants.PASSWORD);
-        WaitUtils.waitForUrlToBe(driver, Constants.DASHBOARD_URL, 10);
+        WaitUtils.waitForUrlToBe(driver, Constants.DASHBOARD_URL, 20);
         absenPage.ensureAbsentPage();
     }
 

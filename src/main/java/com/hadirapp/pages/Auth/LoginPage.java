@@ -40,6 +40,7 @@ public class LoginPage {
     }
 
     public void clickLoginButton(){
+        WaitUtils.waitForElementClickable(driver, loginButton, 10);
         loginButton.click();
     }
 
@@ -51,6 +52,7 @@ public class LoginPage {
     }
 
     public String getErrorMessage() {
+        WaitUtils.waitForElementVisible(driver, errorMessage, 10);
         return errorMessage.getText();
     }
 

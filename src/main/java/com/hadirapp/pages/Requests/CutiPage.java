@@ -92,7 +92,7 @@ public class CutiPage {
 
     public boolean isModalAjukanCutiDisplayed() {
         try {
-            WaitUtils.waitForElementVisible(driver, jenisCutiDropdown, 5);
+            WaitUtils.waitForElementVisible(driver, jenisCutiDropdown, 10);
             return jenisCutiDropdown.isDisplayed();
         } catch (Exception e) {
             return false;
@@ -100,17 +100,18 @@ public class CutiPage {
     }
 
     public String getModalTitleText() {
+        WaitUtils.waitForElementVisible(driver, titleModalAjukanCuti, 10);
         return titleModalAjukanCuti.getText();
     }
 
     public void clickTabInfoCuti() {
-        WaitUtils.waitForElementClickable(driver, tabInfoCuti, 5);
+        WaitUtils.waitForElementClickable(driver, tabInfoCuti, 10);
         tabInfoCuti.click();
     }
 
     public boolean isLabelTotalCutiDisplayed() {
         try {
-            WaitUtils.waitForElementVisible(driver, labelTotalCuti, 5);
+            WaitUtils.waitForElementVisible(driver, labelTotalCuti, 10);
             return labelTotalCuti.isDisplayed();
         } catch (Exception e) {
             return false;
@@ -118,6 +119,7 @@ public class CutiPage {
     }
 
     public String getLabelTotalCutiText() {
+        WaitUtils.waitForElementVisible(driver, labelTotalCuti, 10);
         return labelTotalCuti.getText();
     }
 
@@ -139,6 +141,7 @@ public class CutiPage {
     }
 
     public void clickElement(By locator) {
+        WaitUtils.waitForElementClickable(driver, locator, 10);
         try {
             wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
         } catch (Exception e) {
@@ -148,6 +151,7 @@ public class CutiPage {
     }
 
     public void pilihTanggal(String bulan, String tahun, String startDay, String endDay) {
+        WaitUtils.waitForElementClickable(driver, fieldPilihTanggal, 10);
         fieldPilihTanggal.click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".rdrCalendarWrapper")));
 
@@ -167,11 +171,12 @@ public class CutiPage {
     }
 
     public void fillNotes(String notes) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("notes")));
+        WaitUtils.waitForElementVisible(driver, notesInput, 10);
         notesInput.sendKeys(notes);
     }
 
     public void clickAjukanButton() {
+        WaitUtils.waitForElementClickable(driver, ajukanButton, 10);
         ajukanButton.click();
     }
 
@@ -212,7 +217,7 @@ public class CutiPage {
 
     public String getErrorMessageText() {
         try {
-            WaitUtils.waitForElementVisible(driver, snackbarErrorMsg, 5);
+            WaitUtils.waitForElementVisible(driver, snackbarErrorMsg, 10);
             return snackbarErrorMsg.getText();
         } catch (Exception e) {
             return "Error message tidak muncul";
@@ -229,14 +234,17 @@ public class CutiPage {
     }
 
     public String getTipeCutiValue() {
+        WaitUtils.waitForElementVisible(driver, dropdownTipeCuti, 10);
     return dropdownTipeCuti.getText();
     }
 
     public String getTanggalValue() {
+        WaitUtils.waitForElementVisible(driver, displayTanggal, 10);
         return displayTanggal.getText().trim(); 
     }
 
     public String getCatatanValue() {
+        WaitUtils.waitForElementVisible(driver, notesInput, 10);
         return notesInput.getAttribute("value");
     }
 

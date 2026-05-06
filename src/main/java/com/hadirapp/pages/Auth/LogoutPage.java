@@ -5,6 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import com.hadirapp.utlis.WaitUtils;
+
 public class LogoutPage {
 
     private WebDriver driver;
@@ -21,10 +23,12 @@ public class LogoutPage {
     private WebElement logoutButton;
 
     public void clickMenuButton(){
+        WaitUtils.waitForElementClickable(driver, menuButton, 10);
         menuButton.click();
     }
     
     public void clickLogoutButton(){
+        WaitUtils.waitForElementClickable(driver, logoutButton, 10);
         logoutButton.click();
     }
 

@@ -36,7 +36,7 @@ public class HistoryTest extends BaseTest {
         loginPage.doLogin(Constants.EMAIL, Constants.PASSWORD);
         WaitUtils.waitForUrlContains(driver, "apps", 20);
         historyPage.klikSelengkapnya();
-        WaitUtils.waitForUrlContains(driver, "activity", 10);
+        WaitUtils.waitForUrlContains(driver, "activity", 20);
         Assert.assertTrue(driver.getCurrentUrl().contains("/activity"), "Gagal navigasi ke halaman Activity");
     }
 

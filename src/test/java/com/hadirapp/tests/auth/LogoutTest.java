@@ -24,9 +24,9 @@ public class LogoutTest extends BaseTest {
     public void testLogoutSuccess(){
         log.info("Starting test: TC-OUT-01 - Logout berhasil");
         loginPage.doLogin(Constants.EMAIL, Constants.PASSWORD);
-        WaitUtils.waitForUrlToBe(driver, Constants.DASHBOARD_URL, 10);
+        WaitUtils.waitForUrlToBe(driver, Constants.DASHBOARD_URL, 20);
         logoutPage.doLogout();
-        WaitUtils.waitForUrlToBe(driver, Constants.URL, 10);
+        WaitUtils.waitForUrlToBe(driver, Constants.URL, 20);
         Assert.assertEquals(driver.getCurrentUrl(), Constants.URL);
     }
 
@@ -34,11 +34,11 @@ public class LogoutTest extends BaseTest {
     public void testLogoutBackBtn(){
         log.info("Starting test: TC-OUT-02 - Akses halaman Dashboard/Home setelah logout (Back Button)");
         loginPage.doLogin(Constants.EMAIL, Constants.PASSWORD);
-        WaitUtils.waitForUrlToBe(driver, Constants.DASHBOARD_URL, 10);
+        WaitUtils.waitForUrlToBe(driver, Constants.DASHBOARD_URL, 20);
         logoutPage.doLogout();
-        WaitUtils.waitForUrlToBe(driver, Constants.URL, 10);
+        WaitUtils.waitForUrlToBe(driver, Constants.URL, 20);
         driver.navigate().back();
-        WaitUtils.waitForUrlToBe(driver, Constants.URL, 10);
+        WaitUtils.waitForUrlToBe(driver, Constants.URL, 20);
         Assert.assertEquals(driver.getCurrentUrl(), Constants.URL);
     }
 
@@ -46,11 +46,11 @@ public class LogoutTest extends BaseTest {
     public void testLogoutDirectUrl(){
         log.info("Starting test: TC-OUT-03 - Akses halaman Dashboard/Home setelah logout (Direct URL)");
         loginPage.doLogin(Constants.EMAIL, Constants.PASSWORD);
-        WaitUtils.waitForUrlToBe(driver, Constants.DASHBOARD_URL, 10);
+        WaitUtils.waitForUrlToBe(driver, Constants.DASHBOARD_URL, 20);
         logoutPage.doLogout();
-        WaitUtils.waitForUrlToBe(driver, Constants.URL, 10);
+        WaitUtils.waitForUrlToBe(driver, Constants.URL, 20);
         driver.get(Constants.DASHBOARD_URL);
-        WaitUtils.waitForUrlToBe(driver, Constants.URL, 10);
+        WaitUtils.waitForUrlToBe(driver, Constants.URL, 20);
         Assert.assertEquals(driver.getCurrentUrl(), Constants.URL);
     }
 }

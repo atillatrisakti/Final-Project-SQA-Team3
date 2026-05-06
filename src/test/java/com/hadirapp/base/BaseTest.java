@@ -6,6 +6,8 @@ import org.testng.annotations.BeforeMethod;
 
 import com.hadirapp.drivers.DriverSingleton;
 import com.hadirapp.utlis.Constants;
+import com.hadirapp.utlis.WaitUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +22,7 @@ public class BaseTest {
         DriverSingleton.getInstance(Constants.CHROME);
         driver = DriverSingleton.getDriver();
         driver.get(Constants.URL);
+        WaitUtils.waitForUrlToBe(driver, Constants.URL, 20);
     }
 
     @AfterMethod

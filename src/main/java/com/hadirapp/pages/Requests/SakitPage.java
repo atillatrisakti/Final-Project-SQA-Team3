@@ -150,7 +150,7 @@ public class SakitPage {
 
     public String getErrorMessageText() {
         try {
-            WaitUtils.waitForElementVisible(driver, snackbarErrorMsg, 5);
+            WaitUtils.waitForElementVisible(driver, snackbarErrorMsg, 10);
             return snackbarErrorMsg.getText();
         } catch (Exception e) {
             return "Error message tidak muncul";

@@ -24,7 +24,7 @@ public class LoginTest extends BaseTest {
     public void testLoginValidData() {
         log.info("Starting test: TC-LOG-01- Login dengan data valid");
         loginPage.doLogin(Constants.EMAIL, Constants.PASSWORD);
-        WaitUtils.waitForUrlToBe(driver, Constants.DASHBOARD_URL, 10);
+        WaitUtils.waitForUrlToBe(driver, Constants.DASHBOARD_URL, 20);
         Assert.assertEquals(driver.getCurrentUrl(), Constants.DASHBOARD_URL);
     }
 
@@ -72,7 +72,7 @@ public class LoginTest extends BaseTest {
     public void testNavigateToRegisterPage(){
         log.info("Starting test: TC-LOG-07 - Navigasi ke halaman Registrasi");
         registerPage.clickRegisterButton();
-        WaitUtils.waitForUrlToBe(driver, Constants.REGISTER_URL, 10);
+        WaitUtils.waitForUrlToBe(driver, Constants.REGISTER_URL, 20);
         Assert.assertEquals(driver.getCurrentUrl(), Constants.REGISTER_URL);
     }
 }

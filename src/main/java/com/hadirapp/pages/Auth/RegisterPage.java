@@ -6,6 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.hadirapp.utlis.Constants;
 import com.hadirapp.utlis.WaitUtils;
 
 public class RegisterPage {
@@ -46,11 +47,14 @@ public class RegisterPage {
 
 
 public void clickRegisterButton(){
+    WaitUtils.waitForElementClickable(driver, registerButton, 10);
     registerButton.click();
 }
 
 public void clickBackToLoginButton(){
+    WaitUtils.waitForElementClickable(driver, backToLoginButton, 10);
     backToLoginButton.click();
+    WaitUtils.waitForUrlToBe(driver, Constants.URL, 20);
 }
 
 public void setNIK(String NIK){
@@ -80,6 +84,7 @@ public void uploadSelfie(String filePath){
 }
 
 public void clickSubmitButton(){
+    WaitUtils.waitForElementClickable(driver, submitButton, 10);
     submitButton.click();
 }
 
@@ -94,6 +99,7 @@ public void doRegister(String NIK, String fullName, String email, String passwor
 }
 
 public String getAlertMessage() {
+    WaitUtils.waitForElementVisible(driver, alertMessage, 10);
     return alertMessage.getText();
 }
 

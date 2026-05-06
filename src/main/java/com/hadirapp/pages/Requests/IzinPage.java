@@ -6,6 +6,8 @@ import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.hadirapp.utlis.WaitUtils;
+
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,8 +74,8 @@ public class IzinPage {
 
     // Method untuk klik menu Izin
     public void klikMenuIzin() {
-        WebElement btn = wait.until(ExpectedConditions.elementToBeClickable(iconIzin));
-        btn.click();
+        WaitUtils.waitForElementClickable(driver, iconIzin, 10);
+        iconIzin.click();
     }
 
     // Method untuk memilih tab berdasarkan nama
@@ -84,6 +86,7 @@ public class IzinPage {
         else if (tabName.equals("Izin Off")) tab = tabIzinOff;
     
         scrollToElement(tab);
+        WaitUtils.waitForElementClickable(driver, tab, 10);
         tab.click();
     }
 
@@ -106,7 +109,9 @@ public class IzinPage {
 
     // Method untuk mengisi form Terlambat
     public void isiFormTerlambat(String tanggal, String jam, String notes) {
+        WaitUtils.waitForElementClickable(driver, tabTerlambat, 10);
         tabTerlambat.click();
+        WaitUtils.waitForElementClickable(driver, btnAjukanTerlambat, 10);
         btnAjukanTerlambat.click();
 
         if (!tanggal.isEmpty()) {
@@ -143,7 +148,9 @@ public class IzinPage {
 
     // Method untuk mengisi form Pulang Cepat
     public void isiFormPulangCepat(String tanggal, String jam, String notes) {
+        WaitUtils.waitForElementClickable(driver, tabPulangCepat, 10);
         tabPulangCepat.click();
+        WaitUtils.waitForElementClickable(driver, btnAjukanPulangCepat, 10);
         btnAjukanPulangCepat.click();
 
         if (!tanggal.isEmpty()) {
@@ -180,7 +187,9 @@ public class IzinPage {
 
     // Method untuk mengisi form Izin Off
     public void isiFormIzinOff(String tanggal, String reason) {
+        WaitUtils.waitForElementClickable(driver, tabIzinOff, 10);
         tabIzinOff.click();
+        WaitUtils.waitForElementClickable(driver, btnAjukanIzinOff, 10);
         btnAjukanIzinOff.click();
         if (!tanggal.isEmpty()) {
             WebElement iconKalender = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@aria-label='Choose date']")));
