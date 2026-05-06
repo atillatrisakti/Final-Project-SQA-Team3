@@ -4,6 +4,9 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.*;
+
+import com.hadirapp.utlis.WaitUtils;
+
 import java.time.Duration;
 import java.util.List;
 
@@ -47,11 +50,10 @@ public class KoreksiAbsenPage {
     public void klikMenuKoreksiAbsen() {
         WebElement menu = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//p[text()='Koreksi Absen']")));
         js.executeScript("arguments[0].click();", menu);
+        WaitUtils.waitForUrlContains(driver, "correction", 20);
         WebElement btnBuka = wait.until(ExpectedConditions.visibilityOf(btnBukaForm));
         js.executeScript("arguments[0].scrollIntoView({block: 'center'});", btnBuka);
         js.executeScript("arguments[0].click();", btnBuka);
-
-        System.out.println("Form Koreksi Absen berhasil terbuka.");
     }
 
     // isi data koreksi absen
@@ -60,30 +62,27 @@ public class KoreksiAbsenPage {
             openJamMasuk();
             pilihTanggal("30");
             pilihWaktuManual("8", "00");
-            try {
-                Thread.sleep(500);
-            } catch (Exception e) {
-            } 
+            WaitUtils.waitForElementClickable(driver, ajukanSubmitButton, 10);
         }
 
         if (!jamKeluar.isEmpty()) {
             openJamKeluar();
             pilihTanggal("30");
             pilihWaktuManual("17", "00");
-            try {
-                Thread.sleep(500);
-            } catch (Exception e) {
-            }
+            WaitUtils.waitForElementClickable(driver, ajukanSubmitButton, 10);
         }
 
         if (!tipe.isEmpty()) {
             selectTipeAbsen(tipe);
-            try {
-                Thread.sleep(2000);
-            } catch (Exception e) {
-            } 
+            WaitUtils.waitForElementClickable(driver, ajukanSubmitButton, 10);
         }
-        js.executeScript("arguments[0].click();", ajukanSubmitButton);
+
+        WaitUtils.waitForElementClickable(driver, ajukanSubmitButton, 10);
+        try {
+            ajukanSubmitButton.click();
+        } catch (Exception e) {
+            js.executeScript("arguments[0].click();", ajukanSubmitButton);
+        }
     }
 
     // error message

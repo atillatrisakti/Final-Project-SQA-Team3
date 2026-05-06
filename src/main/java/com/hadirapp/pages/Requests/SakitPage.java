@@ -72,10 +72,10 @@ public class SakitPage {
 
     // Method untuk memilih rentang tanggal sakit
     public void pilihRentangTanggal(String tglMulai, String tglSelesai) {
-        WaitUtils.waitForElementClickable(driver, iconJamKalender, 0).click();
+        WaitUtils.waitForElementClickable(driver, iconJamKalender, 10).click();
         clickTanggal(tglMulai);
         clickTanggal(tglSelesai);
-        WaitUtils.waitForElementClickable(driver, btnSimpanKalender, 0).click();
+        WaitUtils.waitForElementClickable(driver, btnSimpanKalender, 10).click();
     }
 
     // method pilih tanggal
@@ -101,6 +101,16 @@ public class SakitPage {
         }
     }
 
+    public void klikTombolAjukanSakit() {
+        WaitUtils.waitForElementClickable(driver, btnAjukanSakit, 10);
+        try {
+            btnAjukanSakit.click();
+        } catch (Exception e) {
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("arguments[0].click();", btnAjukanSakit);
+        }
+    }
+
 
     // Method untuk upload dokumen
     public void uploadDokumen(String path) {
@@ -108,7 +118,7 @@ public class SakitPage {
     }
 
     // Method untuk klik tombol Ajukan
-    public void klikTombolAjukan() {
+    public void klikTombolSubmit() {
         try {
             ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", btnSubmit);
             Thread.sleep(500);

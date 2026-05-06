@@ -1,8 +1,5 @@
 package com.hadirapp.tests.requests;
 
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -38,12 +35,12 @@ public class SakitTest extends BaseTest {
     @Test(priority = 2, description = "TC-SKT-02 - Sukses ajukan sakit dengan data valid")
     public void testAjukanSakitValid() {
         log.info("TC-SKT-02 - Ajukan sakit dengan data valid");
-        sakitPage.btnAjukanSakit.click();
-        sakitPage.pilihRentangTanggal("6", "8");
+        sakitPage.klikTombolAjukanSakit();
+        sakitPage.pilihRentangTanggal("11", "12");
         String projectPath = System.getProperty("user.dir");
         String imagePath = projectPath + "\\src\\test\\resources\\testdata\\surat_sakit.png";
         sakitPage.uploadDokumen(imagePath);
-        sakitPage.btnSubmit.click();
+        sakitPage.klikTombolSubmit();
         WaitUtils.waitForUrlContains(driver, "sick", 20);
         Assert.assertTrue(driver.getCurrentUrl().contains("sick"));
     }
@@ -51,9 +48,9 @@ public class SakitTest extends BaseTest {
     @Test(priority = 3, description = "TC-SKT-03 - Ajukan sakit dengan Foto Kosong")
     public void testAjukanSakitUploadKosong() {
         log.info("TC-SKT-03 - Ajukan sakit dengan Foto Kosong");
-        sakitPage.btnAjukanSakit.click();
-        sakitPage.pilihRentangTanggal("6", "8");
-        sakitPage.btnSubmit.click();
+        sakitPage.klikTombolAjukanSakit();
+        sakitPage.pilihRentangTanggal("12", "13");
+        sakitPage.klikTombolSubmit();
         Assert.assertTrue(sakitPage.isErrorMessageDisplayed(), "Error message tidak tampil!");
         String actualError = sakitPage.getErrorMessageText();
         String expectedError = "Photo is Required";
@@ -63,11 +60,11 @@ public class SakitTest extends BaseTest {
     @Test(priority = 4, description = "TC-SKT-04 - Pengajuan sakit dengan tanggal kosong")
     public void testSakitTanggalKosong() {
         log.info("TC-SKT-04 - Pengajuan sakit dengan tanggal kosong");
-        sakitPage.btnAjukanSakit.click();
+        sakitPage.klikTombolAjukanSakit();
         String projectPath = System.getProperty("user.dir");
         String imagePath = projectPath + "\\src\\test\\resources\\testdata\\surat_sakit.png";
         sakitPage.uploadDokumen(imagePath);
-        sakitPage.btnSubmit.click();
+        sakitPage.klikTombolSubmit();
         Assert.assertTrue(sakitPage.isErrorMessageDisplayed(), "Error message tidak tampil!");
         String actualError = sakitPage.getErrorMessageText();
         String expectedError = "Incorrect datetime value: 'Invalid date' for column 'sick_request_date_from' at row 1";
@@ -77,7 +74,7 @@ public class SakitTest extends BaseTest {
     @Test(priority = 5, description = "TC-SKT-05 - Pengajuan sakit dengan semua field kosong")
     public void testSakitSemuaFieldKosong() {
         log.info("TC-SKT-05 - Pengajuan sakit dengan semua field kosong");
-        sakitPage.btnAjukanSakit.click();
+        sakitPage.klikTombolAjukanSakit();
         sakitPage.btnSubmit.click();
         Assert.assertTrue(sakitPage.isErrorMessageDisplayed(), "Error message tidak tampil!");
         String actualError = sakitPage.getErrorMessageText();
@@ -88,12 +85,12 @@ public class SakitTest extends BaseTest {
     @Test(priority = 6, description = "TC-SKT-06 - Error saat input tanggal yang sudah pernah diajukan")
     public void testSakitDataDuplikat() {
         log.info("TC-SKT-06 - Error saat input tanggal yang sudah pernah diajukan");
-        sakitPage.btnAjukanSakit.click();
+        sakitPage.klikTombolAjukanSakit();
         sakitPage.pilihRentangTanggal("6", "8");
         String projectPath = System.getProperty("user.dir");
         String imagePath = projectPath + "\\src\\test\\resources\\testdata\\surat_sakit.png";
         sakitPage.uploadDokumen(imagePath);
-        sakitPage.klikTombolAjukan();
+        sakitPage.klikTombolSubmit();
         Assert.assertTrue(sakitPage.isErrorMessageDisplayed(), "Error message tidak tampil!");
         String actualError = sakitPage.getErrorMessageText();
         String expectedError = "Anda sudah melakukan izin sakit di tanggal tersebut";
@@ -103,7 +100,7 @@ public class SakitTest extends BaseTest {
     @Test(priority = 7, description = "TC-SKT-07 - Memastikan tombol Reset mengosongkan form")
     public void testResetForm() {
         log.info("TC-SKT-07 - Memastikan tombol Reset mengosongkan form");
-        sakitPage.btnAjukanSakit.click();
+        sakitPage.klikTombolAjukanSakit();
         sakitPage.pilihRentangTanggal("10", "12");
         String projectPath = System.getProperty("user.dir");
         String imagePath = projectPath + "\\src\\test\\resources\\testdata\\surat_sakit.png";

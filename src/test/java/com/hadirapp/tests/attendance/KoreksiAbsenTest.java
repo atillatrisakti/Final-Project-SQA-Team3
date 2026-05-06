@@ -22,12 +22,6 @@ public class KoreksiAbsenTest extends BaseTest {
         WaitUtils.waitForUrlContains(driver, "apps", 20);
         // Alur: Klik menu -> Klik tombol biru 'Ajukan Koreksi' -> Form muncul
         koreksiPage.klikMenuKoreksiAbsen();
-
-        // Beri waktu animasi modal muncul
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-        }
     }
 
     @Test(priority = 1, description = "TC-KOR-01 - Verifikasi tampilan form koreksi")

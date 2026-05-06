@@ -1,0 +1,43 @@
+name: Regression Tests
+
+on:
+  push:
+    branches: [main, master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: "maven"
+
+      - name: Create .env file
+        run: |
+          echo "BASE_URL=${{ secrets.BASE_URL }}" >> .env
+          echo "EMAIL=${{ secrets.EMAIL }}" >> .env
+          echo "EMAIL_2=${{ secrets.EMAIL_2 }}" >> .env
+          echo "PASSWORD=${{ secrets.PASSWORD }}" >> .env
+          echo "PASSWORD_2=${{ secrets.PASSWORD_2 }}" >> .env
+          echo "EMAIL_3=${{ secrets.EMAIL_3 }}" >> .env
+          echo "PASSWORD_3=${{ secrets.PASSWORD_3 }}" >> .env
+          echo "DASHBOARD_URL=${{ secrets.DASHBOARD_URL }}" >> .env
+          echo "REGISTER_URL=${{ secrets.REGISTER_URL }}" >> .env
+          echo "RESET_PASS_URL=${{ secrets.RESET_PASS_URL }}" >> .env
+
+      - name: Run Regression Tests
+        run: mvn clean test -DsuiteXmlFile=testng.xml -Dbrowser=chrome-headless
+
+      - name: Upload Extent Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: target/extent-reports/

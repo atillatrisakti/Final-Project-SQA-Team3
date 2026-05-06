@@ -288,7 +288,7 @@ public class LemburPage {
                 + "', Catatan='" + getCurrentValueOrEmpty(CATATAN_FIELD) + "'";
     }
 
-    private boolean isOptionalCatatanEmpty() {
+    public boolean isOptionalCatatanEmpty() {
         try {
             return getInputValue(driver.findElement(CATATAN_FIELD)).isEmpty();
         } catch (NoSuchElementException e) {

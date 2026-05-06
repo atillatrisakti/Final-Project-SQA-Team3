@@ -122,11 +122,20 @@ public class CutiPage {
     }
 
     public void pilihTipeCuti(String tipeCuti) {
-        wait.until(ExpectedConditions.elementToBeClickable(jenisCutiDropdown)).click();
+        WaitUtils.waitForElementClickable(driver, jenisCutiDropdown, 10);
+        try {
+            jenisCutiDropdown.click();
+        } catch (Exception e) {
+            js.executeScript("arguments[0].click();", jenisCutiDropdown);
+        }
 
         String xpathOption = "//li[@role='option' and contains(text(),'" + tipeCuti + "')]";
-        WebElement option = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpathOption)));
-        option.click();
+        WebElement option = WaitUtils.waitForElementClickable(driver, By.xpath(xpathOption), 10);
+        try {
+            option.click();
+        } catch (Exception e) {
+            js.executeScript("arguments[0].click();", option);
+        }
     }
 
     public void clickElement(By locator) {
