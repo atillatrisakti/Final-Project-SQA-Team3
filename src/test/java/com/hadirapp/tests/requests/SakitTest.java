@@ -48,7 +48,7 @@ public class SakitTest extends BaseTest {
     public void testAjukanSakitUploadKosong() {
         log.info("TC-SKT-03 - Ajukan sakit dengan Foto Kosong");
         sakitPage.klikTombolAjukanSakit();
-        sakitPage.pilihRentangTanggal("8", "9");
+        sakitPage.pilihRentangTanggal("13", "14");
         sakitPage.klikTombolSubmit();
         Assert.assertTrue(sakitPage.isErrorMessageDisplayed(), "Error message tidak tampil!");
         String actualError = sakitPage.getErrorMessageText();

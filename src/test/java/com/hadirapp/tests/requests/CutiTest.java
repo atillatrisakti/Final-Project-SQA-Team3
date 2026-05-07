@@ -56,8 +56,8 @@ public class CutiTest extends BaseTest {
     public void testCuti() {
         log.info("TC-CTI-04 - Pengajuan cuti dengan data valid");
         cutiPage.doCuti();
-        cutiPage.pilihTipeCuti("Cuti Tahunan");
-        cutiPage.pilihTanggal("May", "2026", "11", "15");
+        cutiPage.pilihTipeCuti("Pernikahan diri sendiri");
+        cutiPage.pilihTanggal("May", "2026", "20", "21");
         cutiPage.fillNotes("Cuti");
         cutiPage.clickAjukanButton();
         Assert.assertTrue(cutiPage.isHalamanCutiDisplayed(), "Halaman Cuti tidak tampil setelah submit");
