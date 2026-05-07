@@ -32,6 +32,12 @@ jobs:
           echo "REGISTER_URL=${{ secrets.REGISTER_URL }}" >> .env
           echo "RESET_PASS_URL=${{ secrets.RESET_PASS_URL }}" >> .env
 
+      - name: Start Healenium Services
+        run: |
+          docker-compose up -d
+          # Wait for backend to be ready
+          sleep 10
+
       - name: Run Regression Tests
         run: mvn clean test -DsuiteXmlFile=testng.xml -Dbrowser=chrome-headless
 

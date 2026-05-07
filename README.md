@@ -10,6 +10,9 @@ Repository ini berisi framework otomasi pengujian untuk aplikasi **Hadir**, yang
 - **Build Tool**: Maven
 - **Reporting**: Extent Reports (Spark Reporter)
 - **CI/CD**: GitHub Actions
+- **Self-Healing**: Healenium (3.x)
+- **Database**: PostgreSQL (Dockerized for Healenium)
+- **Infrastructure**: Docker & Docker Compose
 - **Configuration**: Dotenv-java (Environment Variables)
 
 ## 📁 Project Structure
@@ -27,7 +30,11 @@ src
 
 ## 🧪 Features & Test Coverage
 
-Proyek ini mencakup pengujian regresi untuk fitur-fitur utama berikut:
+Proyek ini mencakup pengujian regresi untuk fitur-fitur utama serta implementasi **Self-Healing Automation**:
+
+### 0. Self-Healing Capability (Healenium)
+- **Automatic Element Recovery**: Memperbaiki locator yang rusak secara otomatis saat terjadi perubahan UI minor (ID, Class, XPath, dll).
+- **Element Learning**: Menyimpan metadata elemen ke database PostgreSQL untuk referensi pemulihan.
 
 ### 1. Authentication
 
@@ -66,7 +73,14 @@ Proyek ini mencakup pengujian regresi untuk fitur-fitur utama berikut:
     cp .env.example .env
     ```
 
-3.  **Install Dependencies**
+3.  **Start Infrastructure (Docker)**
+    Pastikan Docker Desktop sudah menyala, lalu jalankan layanan Selenium Grid dan Healenium:
+
+    ```bash
+    docker-compose up -d
+    ```
+
+4.  **Install Dependencies**
     ```bash
     mvn install
     ```
@@ -91,10 +105,13 @@ mvn clean test -DsuiteXmlFile=testng.xml
 mvn clean test -Dbrowser=chrome-headless
 ```
 
-## 📊 Reporting
-
 Hasil eksekusi tes akan secara otomatis menghasilkan **Extent Report** yang dapat ditemukan di:
 `target/extent-reports/Automation-Report.html`
+
+### Healenium Dashboard
+Jika Anda menjalankan tes secara lokal dengan Docker, Anda dapat melihat log healing dan manajemen selector melalui:
+- **Healenium Reports**: `http://localhost:7878/report`
+- **Postgres Database**: Port `15432` (untuk melihat data selector yang terekam)
 
 ## 👷 CI/CD with GitHub Actions
 

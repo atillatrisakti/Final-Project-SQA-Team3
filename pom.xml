@@ -49,6 +49,18 @@
       <artifactId>extentreports</artifactId>
       <version>5.1.1</version>
     </dependency>
+    <!-- Healenium -->
+    <dependency>
+      <groupId>com.epam.healenium</groupId>
+      <artifactId>healenium-web</artifactId>
+      <version>3.6.0</version>
+    </dependency>
+    <!-- Google Guice (Required by Healenium) -->
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+      <version>7.0.0</version>
+    </dependency>
   </dependencies>
 
   <build>

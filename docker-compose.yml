@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # Layanan Selenium Hub
+  selenium-hub:
+    image: selenium/hub:latest
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+
+  # Layanan Node Chrome untuk Selenium Grid
+  chrome-node:
+    image: selenium/node-chrome:latest
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    ports:
+      - "5900:5900" # Untuk VNC jika diperlukan
+
+  # Layanan Node Firefox untuk Selenium Grid
+  firefox-node:
+    image: selenium/node-firefox:latest
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    ports:
+      - "5901:5900" # Untuk VNC jika diperlukan
+
+  # Layanan Postgres untuk Healenium Backend
+  healenium-db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=healenium
+      - POSTGRES_PASSWORD=healenium
+      - POSTGRES_DB=healenium
+    ports:
+      - "15432:5432"
+    volumes:
+      - healenium-db-data:/var/lib/postgresql/data
+
+  # Layanan Backend Healenium
+  healenium-backend:
+    image: healenium/hlm-backend:3.5.1
+    depends_on:
+      - healenium-db
+    environment:
+      - SPRING_POSTGRES_DB=healenium
+      - SPRING_POSTGRES_SCHEMA=public
+      - SPRING_POSTGRES_USER=healenium
+      - SPRING_POSTGRES_PASSWORD=healenium
+      - SPRING_POSTGRES_DB_HOST=healenium-db
+      - SPRING_POSTGRES_DB_PORT=5432
+      - KEY_SELECTOR_URL=false
+      - COLLECT_METRICS=true
+      - HLM_LOG_LEVEL=info
+    ports:
+      - "7878:7878" # Port default Healenium Backend
+      - "8000:8000" # Port default Healenium Imitator
+
+volumes:
+  healenium-db-data:
