@@ -3,6 +3,7 @@ package com.hadirapp.tests.attendance;
 import com.hadirapp.base.BaseTest;
 import com.hadirapp.pages.Attendance.AbsenMasukPage;
 import com.hadirapp.pages.Auth.LoginPage;
+import com.hadirapp.utlis.Constants;
 import com.hadirapp.utlis.WaitUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -30,7 +31,7 @@ public class AbsenMasukBlockCameraTest extends BaseTest {
     @Test(priority = 1, description = "TC-ABS-01 - Absensi (Masuk) - Penolakan akses kamera (Block)")
     public void testAbsenMasukTolakKamera() {
         log.info("Starting test: TC-ABS-01 - Absensi (Masuk) - Penolakan akses kamera (Block)");
-        loginPage.doLogin("dada@mail.com", "trisakti");
+        loginPage.doLogin(Constants.EMAIL_4, Constants.PASSWORD_4);
         WaitUtils.waitForUrlContains(driver, "apps", 10);
         
         absenMasukPage.klikMenuAbsenMasuk();

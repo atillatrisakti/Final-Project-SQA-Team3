@@ -19,12 +19,14 @@ public class Constants {
     public static final String PASSWORD_2 = dotenv.get("PASSWORD_2");
     public static final String EMAIL_3 = dotenv.get("EMAIL_3");
     public static final String PASSWORD_3 = dotenv.get("PASSWORD_3");
+    public static final String EMAIL_4 = dotenv.get("EMAIL_4");
+    public static final String PASSWORD_4 = dotenv.get("PASSWORD_4");
     public static final String DASHBOARD_URL = dotenv.get("DASHBOARD_URL");
     public static final String REGISTER_URL = dotenv.get("REGISTER_URL");
     public static final String RESET_PASS_URL = dotenv.get("RESET_PASS_URL");
     public static final long TIMEOUT = 10;
 
-    public static String getTodayDate() {
+    public static String getTodayDate() {  
         return String.valueOf(LocalDate.now().getDayOfMonth());
     }
 
