@@ -76,10 +76,11 @@ services:
       - "7878:7878"
       - "8000:8000"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:7878/"]
-      interval: 10s
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:7878/ || exit 1"]
+      interval: 15s
       timeout: 10s
-      retries: 10
+      retries: 15
+      start_period: 30s
 
 volumes:
   healenium-db-data:

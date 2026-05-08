@@ -38,6 +38,10 @@ jobs:
         run: |
           docker compose up -d --wait
 
+      - name: Docker Logs on Failure
+        if: failure()
+        run: docker compose logs
+
       - name: Run Regression Tests
         run: mvn clean test -DsuiteXmlFile=testng.xml -Dbrowser=chrome-headless
 
