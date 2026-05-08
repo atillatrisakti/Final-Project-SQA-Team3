@@ -34,6 +34,13 @@ jobs:
           echo "REGISTER_URL=${{ secrets.REGISTER_URL }}" >> .env
           echo "RESET_PASS_URL=${{ secrets.RESET_PASS_URL }}" >> .env
 
+      - name: Debug: List Files
+        run: |
+          echo "--- Folder Utama ---"
+          ls -F
+          echo "--- Folder src/test/java ---"
+          find src/test/java -maxdepth 10 -not -path '*/.*'
+      
       - name: Start Healenium Services
         run: |
           docker compose up -d --wait
