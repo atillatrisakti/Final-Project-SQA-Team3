@@ -4,10 +4,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.hadirapp.utlis.Constants;
-import com.hadirapp.utlis.WaitUtils;
+import com.hadirapp.utils.Constants;
+import com.hadirapp.utils.WaitUtils;
 
 public class RegisterPage {
 

@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 
 import com.hadirapp.base.BaseTest;
 import com.hadirapp.pages.Auth.RegisterPage;
-import com.hadirapp.utlis.Constants;
+import com.hadirapp.utils.Constants;
 
 public class RegisterTest extends BaseTest {
     private RegisterPage registerPage;

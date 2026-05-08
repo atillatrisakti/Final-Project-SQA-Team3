@@ -7,8 +7,8 @@ import org.testng.annotations.Test;
 import com.hadirapp.base.BaseTest;
 import com.hadirapp.pages.Auth.LoginPage;
 import com.hadirapp.pages.Auth.LogoutPage;
-import com.hadirapp.utlis.Constants;
-import com.hadirapp.utlis.WaitUtils;
+import com.hadirapp.utils.Constants;
+import com.hadirapp.utils.WaitUtils;
 
 public class LogoutTest extends BaseTest {
     private LoginPage loginPage;

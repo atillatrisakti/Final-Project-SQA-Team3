@@ -5,10 +5,9 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.*;
 
-import com.hadirapp.utlis.WaitUtils;
+import com.hadirapp.utils.WaitUtils;
 
 import java.time.Duration;
-import java.util.List;
 
 public class KoreksiAbsenPage {
     private WebDriver driver;

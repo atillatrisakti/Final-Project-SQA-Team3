@@ -1,4 +1,4 @@
-package com.hadirapp.utlis;
+package com.hadirapp.utils;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

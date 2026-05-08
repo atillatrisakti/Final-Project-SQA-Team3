@@ -3,7 +3,8 @@ package com.hadirapp.pages.Attendance;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import com.hadirapp.utlis.WaitUtils;
+
+import com.hadirapp.utils.WaitUtils;
 
 public class AbsenMasukPage {
     private WebDriver driver;

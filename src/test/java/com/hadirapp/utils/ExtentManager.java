@@ -1,4 +1,4 @@
-package com.hadirapp.utlis;
+package com.hadirapp.utils;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;

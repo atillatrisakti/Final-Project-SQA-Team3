@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import com.epam.healenium.SelfHealingDriver;
 import com.hadirapp.drivers.strategies.DriverStrategy;
 import com.hadirapp.drivers.strategies.DriverStrategyImplementer;
-import com.hadirapp.utlis.Constants;
+import com.hadirapp.utils.Constants;
 
 import java.time.Duration;
 import java.util.Locale;

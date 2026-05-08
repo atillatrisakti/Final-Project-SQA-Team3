@@ -1,4 +1,4 @@
-package com.hadirapp.utlis;
+package com.hadirapp.utils;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import java.time.LocalDate;

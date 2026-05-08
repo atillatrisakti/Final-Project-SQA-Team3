@@ -6,8 +6,8 @@ import org.testng.annotations.Test;
 
 import com.hadirapp.base.BaseTest;
 import com.hadirapp.pages.Auth.ResetPasswordPage;
-import com.hadirapp.utlis.Constants;
-import com.hadirapp.utlis.WaitUtils;
+import com.hadirapp.utils.Constants;
+import com.hadirapp.utils.WaitUtils;
 
 public class ResetPasswordTest extends BaseTest {
 

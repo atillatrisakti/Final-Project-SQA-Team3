@@ -12,8 +12,8 @@ import com.hadirapp.base.BaseTest;
 import com.hadirapp.pages.Attendance.AbsenPage;
 import com.hadirapp.pages.Auth.LoginPage;
 import com.hadirapp.pages.Requests.LemburPage;
-import com.hadirapp.utlis.Constants;
-import com.hadirapp.utlis.WaitUtils;
+import com.hadirapp.utils.Constants;
+import com.hadirapp.utils.WaitUtils;
 
 public class LemburTest extends BaseTest{
     private LoginPage loginPage;

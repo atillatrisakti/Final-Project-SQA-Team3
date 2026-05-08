@@ -2,7 +2,7 @@
 <suite name="Hadir App Automation Suite" verbose="1">
     
     <listeners>
-        <listener class-name="com.hadirapp.utlis.TestListener"/>
+        <listener class-name="com.hadirapp.utils.TestListener"/>
     </listeners>
 
     <test name="Authentication Tests">

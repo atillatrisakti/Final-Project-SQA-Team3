@@ -5,8 +5,8 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 import com.hadirapp.drivers.DriverSingleton;
-import com.hadirapp.utlis.Constants;
-import com.hadirapp.utlis.WaitUtils;
+import com.hadirapp.utils.Constants;
+import com.hadirapp.utils.WaitUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

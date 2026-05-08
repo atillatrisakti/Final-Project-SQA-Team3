@@ -1,9 +1,10 @@
 package com.hadirapp.pages.Attendance;
 
-import com.hadirapp.utlis.WaitUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+
+import com.hadirapp.utils.WaitUtils;
 
 public class AbsenKeluarPage {
     private WebDriver driver;
