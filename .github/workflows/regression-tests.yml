@@ -28,15 +28,15 @@ jobs:
           echo "PASSWORD_2=${{ secrets.PASSWORD_2 }}" >> .env
           echo "EMAIL_3=${{ secrets.EMAIL_3 }}" >> .env
           echo "PASSWORD_3=${{ secrets.PASSWORD_3 }}" >> .env
+          echo "EMAIL_4=${{ secrets.EMAIL_4 }}" >> .env
+          echo "PASSWORD_4=${{ secrets.PASSWORD_4 }}" >> .env
           echo "DASHBOARD_URL=${{ secrets.DASHBOARD_URL }}" >> .env
           echo "REGISTER_URL=${{ secrets.REGISTER_URL }}" >> .env
           echo "RESET_PASS_URL=${{ secrets.RESET_PASS_URL }}" >> .env
 
       - name: Start Healenium Services
         run: |
-          docker-compose up -d
-          # Wait for backend to be ready
-          sleep 10
+          docker compose up -d --wait
 
       - name: Run Regression Tests
         run: mvn clean test -DsuiteXmlFile=testng.xml -Dbrowser=chrome-headless

@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   # Layanan Selenium Hub
@@ -8,12 +8,18 @@ services:
       - "4442:4442"
       - "4443:4443"
       - "4444:4444"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4444/status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   # Layanan Node Chrome untuk Selenium Grid
   chrome-node:
     image: selenium/node-chrome:latest
     depends_on:
-      - selenium-hub
+      selenium-hub:
+        condition: service_healthy
     environment:
       - SE_EVENT_BUS_HOST=selenium-hub
       - SE_EVENT_BUS_PUBLISH_PORT=4442
@@ -44,12 +50,18 @@ services:
       - "15432:5432"
     volumes:
       - healenium-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U healenium"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   # Layanan Backend Healenium
   healenium-backend:
     image: healenium/hlm-backend:3.5.1
     depends_on:
-      - healenium-db
+      healenium-db:
+        condition: service_healthy
     environment:
       - SPRING_POSTGRES_DB=healenium
       - SPRING_POSTGRES_SCHEMA=public
@@ -61,8 +73,13 @@ services:
       - COLLECT_METRICS=true
       - HLM_LOG_LEVEL=info
     ports:
-      - "7878:7878" # Port default Healenium Backend
-      - "8000:8000" # Port default Healenium Imitator
+      - "7878:7878"
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7878/"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
 
 volumes:
   healenium-db-data:
